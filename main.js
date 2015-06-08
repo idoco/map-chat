@@ -16,7 +16,7 @@ eb.onopen = function () {
 
 function publish(address, message) {
     if (eb) {
-        var json = {text: message};
+        var json = createMessage(message);
         eb.publish(address, json);
     }
 }
