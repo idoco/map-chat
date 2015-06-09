@@ -1,0 +1,36 @@
+html, body, #map-canvas {
+    height: 100%;
+    margin: 0;
+    padding: 0
+}
+
+/* label color */
+.input-field label {
+    color: black;
+}
+
+/* label underline focus color */
+.input-field input[type=text]:focus {
+    border-bottom: 2px solid #2196f3;
+    box-shadow: 0 1px 0 0 #42a5f5;
+}
+
+/* valid color */
+.input-field input[type=text] {
+    border-bottom: 2px solid #03a9f4;
+    box-shadow: 0 1px 0 0 #29b6f6;
+}
+
+::-webkit-input-placeholder {
+    color: #2196f3; }
+
+:-moz-placeholder {
+    /* Firefox 18- */
+    color: #2196f3; }
+
+::-moz-placeholder {
+    /* Firefox 19+ */
+    color: #2196f3; }
+
+:-ms-input-placeholder {
+    color: #2196f3; }
