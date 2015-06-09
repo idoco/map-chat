@@ -7,6 +7,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
     <link href="stylesheets/main.css" rel="stylesheet"/>
 
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-63921484-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
@@ -25,6 +36,13 @@
     <nav>
         <div class="nav-wrapper blue">
             <a href="#!" class="brand-logo">MapChat</a>
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="https://github.com/idoco/map-chat">Fork on GitHub</a></li>
+            </ul>
+            <ul class="side-nav" id="mobile-demo">
+                <li><a href="https://github.com/idoco/map-chat">Fork on GitHub</a></li>
+            </ul>
         </div>
     </nav>
 </div>
@@ -33,7 +51,7 @@
 
 <div class="fixed-action-btn center" style="bottom: 45px; left: 24px;">
     <div class="input-field">
-        <input placeholder="Your text goes here" id="input" type="text" style="max-width: 200px;">
+        <input placeholder="Your text goes here" id="input" type="text" maxlength="60" style="max-width: 200px;">
     </div>
 </div>
 

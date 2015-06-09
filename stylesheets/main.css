@@ -20,3 +20,17 @@ html, body, #map-canvas {
     border-bottom: 2px solid #03a9f4;
     box-shadow: 0 1px 0 0 #29b6f6;
 }
+
+::-webkit-input-placeholder {
+    color: #2196f3; }
+
+:-moz-placeholder {
+    /* Firefox 18- */
+    color: #2196f3; }
+
+::-moz-placeholder {
+    /* Firefox 19+ */
+    color: #2196f3; }
+
+:-ms-input-placeholder {
+    color: #2196f3; }
