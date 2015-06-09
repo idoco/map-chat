@@ -12,6 +12,12 @@ eb.onopen = function () {
             input.val('');
         }
     });
+
+    input.focus();
+};
+
+eb.onclose = function(){
+    Materialize.toast('Connection lost, please refresh :( ', 10000);
 };
 
 function publish(address, message) {
@@ -24,7 +30,13 @@ function publish(address, message) {
 function subscribe(address) {
     if (eb) {
         eb.registerHandler(address, function (msg) {
-            $(".chat").append(msg.text + "</br>");
+            displayMessage(msg);
         });
     }
 }
+
+$( document ).ready(function() {
+    if(!Modernizr.websockets || !Modernizr.geolocation){
+        Materialize.toast('Browser not supported :(', 10000);
+    }
+});

@@ -5,16 +5,18 @@
     <style>
         html, body, #map-canvas { height: 100%; margin: 0; padding: 0 }
     </style>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
+
+    <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
     <script src="http://cdn.jsdelivr.net/sockjs/1.0.0/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vertx/2.0.0/vertxbus.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
 
-    <script type="text/javascript" src="javascripts/modernizr.custom.js"></script>
-    <script src="main.js"></script>
-    <script src="map.js"></script>
+    <script type="text/javascript" src="javascript/modernizr.custom.js"></script>
+    <script src="javascript/main.js"></script>
+    <script src="javascript/map.js"></script>
 </head>
 
 <body>
@@ -27,10 +29,10 @@
     </nav>
 </div>
 
-<div class="container" style="position:absolute; padding-top: 100px; z-index: 100;">
-    <h5>Chat:</h5>
-    <div class="chat"> </div>
-</div>
+<!--<div class="container" style="position:absolute; padding-top: 100px; z-index: 100;">-->
+    <!--<h5>Chat:</h5>-->
+    <!--<div class="chat"> </div>-->
+<!--</div>-->
 
 <div id="map-canvas"></div>
 

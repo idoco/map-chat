@@ -1,15 +1,16 @@
 
-var sessionId = Math.floor((Math.random() * 10000000) + 1);
+var mySessionId = Math.floor((Math.random() * 10000000) + 1);
 var map;
-var userLocation;
+var userLocation = null;
 var userMaker;
+var markersMap = {};
 
 function initialize() {
     var defaultLatLng = new google.maps.LatLng(32.078043, 34.774177); // Add the coordinates
 
     var mapOptions = {
         center: defaultLatLng,
-        zoom: 14, // The initial zoom level when your map loads (0-20)
+        zoom: 16, // The initial zoom level when your map loads (0-20)
         minZoom: 13, // Minimum zoom level allowed (0-20)
         maxZoom: 17, // Maximum soom level allowed (0-20)
         zoomControl:false, // Set to true if using zoomControlOptions below, or false to remove all zoom controls.
@@ -38,8 +39,15 @@ function initialize() {
 
 function getLocation() {
     function newPosition(position) {
-        userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        userMaker.setPosition(userLocation);
+        var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        userMaker.setPosition(latLng);
+
+        if (!userLocation) {
+            userLocation = latLng;
+            map.panTo(userLocation);
+        } else{
+            userLocation = latLng;
+        }
     }
 
     function positionError(err) {
@@ -61,17 +69,41 @@ function getLocation() {
 
 function createMessage(text){
     return {
-        sessionId: sessionId,
+        sessionId: mySessionId,
         lat:userLocation.lat(),
         lng: userLocation.lng(),
         text: text
     };
 }
 
-google.maps.event.addDomListener(window, 'load', initialize);
+function displayMessage(msg){
+    var newPosition = new google.maps.LatLng(msg.lat,msg.lng);
+    var msgSessionId = msg.sessionId;
+    if(markersMap[msgSessionId]){
+        var existingMarker = markersMap[msgSessionId].maker;
+        var existingInfoWindow = markersMap[msgSessionId].infoWindow;
 
-$( document ).ready(function() {
-    if(!Modernizr.websockets || !Modernizr.geolocation){
-        Materialize.toast('Browser not supported :(', 10000);
+        existingMarker.setPosition(newPosition);
+        existingInfoWindow.setContent(msg.text);
+    } else {
+        var infoWindow = new google.maps.InfoWindow({
+            content: msg.text,
+            maxWidth: 400
+        });
+
+        var marker = new google.maps.Marker({
+            position: newPosition,
+            map: map,
+            title: "User "+msgSessionId
+        });
+
+        infoWindow.open(map, marker);
+
+        markersMap[msgSessionId] = {
+            maker: marker,
+            infoWindow: infoWindow
+        }
     }
-});
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
