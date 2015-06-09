@@ -1,37 +1,48 @@
 var focusOnInput = true;
-var eb = new vertx.EventBus("http://chatmap.cloudapp.net/chat");
+var eb;
+var retryCount = 5;
 
-eb.onopen = function () {
-    var topic = "main";
+function initialiseEventBus(){
+    eb = new vertx.EventBus("http://chatmap.cloudapp.net/chat");
 
-    subscribe(topic);
+    eb.onopen = function () {
+        var topic = "main";
 
-    function sendMessage(topic, input) {
-        publish(topic, input.val());
-        input.val('');
-    }
+        subscribe(topic);
 
-    var input = $("#input");
-    input.keyup(function (e) {
-        if (e.keyCode == 13) {
-            sendMessage(topic, input);
+        function sendMessage(topic, input) {
+            publish(topic, input.val());
+            input.val('');
         }
-    });
 
-    $("#send-button").click(function(){
-        sendMessage(topic, input);
-    });
+        var input = $("#input");
+        input.keyup(function (e) {
+            if (e.keyCode == 13) {
+                sendMessage(topic, input);
+            }
+        });
 
-    if (focusOnInput) {
-        input.focus();
-        focusOnInput = false;
-    }
+        $("#send-button").click(function(){
+            sendMessage(topic, input);
+        });
 
-};
+        if (focusOnInput) {
+            input.focus();
+            focusOnInput = false;
+        }
 
-eb.onclose = function(){
-    Materialize.toast('Connection lost, please refresh :( ', 10000);
-};
+    };
+
+    eb.onclose = function(){
+        if (retryCount) {
+            retryCount--;
+            console.log('Connection lost, trying to reconnect');
+            initialiseEventBus()
+        } else{
+            Materialize.toast('Connection lost, please refresh :( ', 10000);
+        }
+    };
+}
 
 function publish(address, message) {
     if (eb) {
@@ -47,6 +58,8 @@ function subscribe(address) {
         });
     }
 }
+
+initialiseEventBus();
 
 $( document ).ready(function() {
     if(!Modernizr.websockets || !Modernizr.geolocation){
