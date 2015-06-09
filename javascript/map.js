@@ -3,6 +3,7 @@ var mySessionId = Math.floor((Math.random() * 10000000) + 1);
 var map;
 var userLocation = null;
 var userMaker;
+var userInfoWindow;
 var markersMap = {};
 
 function initialize() {
@@ -33,6 +34,16 @@ function initialize() {
         map: map, // assign the marker to our map variable
         title: 'Me!'
     });
+
+    userInfoWindow = new google.maps.InfoWindow({
+        content: "",
+        maxWidth: 400
+    });
+
+    markersMap[mySessionId] = {
+        maker: userMaker,
+        infoWindow: userInfoWindow
+    };
 
     getLocation();
 }
@@ -85,6 +96,7 @@ function displayMessage(msg){
 
         existingMarker.setPosition(newPosition);
         existingInfoWindow.setContent(msg.text);
+        existingInfoWindow.open(map, existingMarker);
     } else {
         var infoWindow = new google.maps.InfoWindow({
             content: msg.text,

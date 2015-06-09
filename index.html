@@ -8,6 +8,10 @@
 
     <style>
         html, body, #map-canvas { height: 100%; margin: 0; padding: 0 }
+        /* label color */
+        .input-field label {
+            color: black;
+        }
         /* label underline focus color */
         .input-field input[type=text]:focus {
             border-bottom: 2px solid #2196f3;
@@ -25,7 +29,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
     <script src="http://cdn.jsdelivr.net/sockjs/1.0.0/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vertx/2.0.0/vertxbus.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDC0r7BDOgLP6mctbYTPSEFLxvjZA0NDbQ"></script>
 
     <script type="text/javascript" src="javascript/modernizr.custom.js"></script>
     <script src="javascript/main.js"></script>
@@ -44,14 +48,18 @@
 
 <div id="map-canvas"></div>
 
-<div class="fixed-action-btn center " style="width: 100%;">
+<div class="fixed-action-btn center" style="bottom: 45px; left: 24px;">
     <div class="input-field">
-        <input placeholder="Your text goes here" id="input" type="text" style="max-width: 200px;">
-        <a id="send-button" class="btn-floating btn-large blue">
-            <i class="large mdi-content-send"></i>
-        </a>
+        <input placeholder="Your text goes here" id="input" type="text" style="max-width: 250px;">
     </div>
 </div>
+
+<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+    <a id="send-button" class="btn-floating btn-large waves-effect waves-light blue">
+        <i class="large mdi-content-send"></i>
+    </a>
+</div>
+
 
 </body>
 </html>

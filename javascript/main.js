@@ -1,4 +1,5 @@
-eb = new vertx.EventBus("http://chatmap.cloudapp.net/chat");
+var focusOnInput = true;
+var eb = new vertx.EventBus("http://chatmap.cloudapp.net/chat");
 
 eb.onopen = function () {
     var topic = "main";
@@ -21,7 +22,11 @@ eb.onopen = function () {
         sendMessage(topic, input);
     });
 
-    input.focus();
+    if (focusOnInput) {
+        input.focus();
+        focusOnInput = false;
+    }
+
 };
 
 eb.onclose = function(){
