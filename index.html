@@ -2,10 +2,21 @@
 <head>
     <title>MapChat</title>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
+
     <style>
         html, body, #map-canvas { height: 100%; margin: 0; padding: 0 }
+        /* label underline focus color */
+        .input-field input[type=text]:focus {
+            border-bottom: 2px solid #2196f3;
+            box-shadow: 0 1px 0 0 #42a5f5;
+        }
+        /* valid color */
+        .input-field input[type=text] {
+            border-bottom: 2px solid #03a9f4;
+            box-shadow: 0 1px 0 0 #29b6f6;
+        }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
 
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -29,15 +40,15 @@
     </nav>
 </div>
 
-<!--<div class="container" style="position:absolute; padding-top: 100px; z-index: 100;">-->
-    <!--<h5>Chat:</h5>-->
-    <!--<div class="chat"> </div>-->
-<!--</div>-->
-
 <div id="map-canvas"></div>
 
-<div class="fixed-action-btn center" style="width: 100%;">
-    <input class="input" type="text" style="max-width: 400px; color: black">
+<div class="fixed-action-btn center " style="width: 100%;">
+    <div class="input-field">
+        <input placeholder="Your text goes here" id="input" type="text" style="max-width: 400px;">
+        <a id="send-button" class="btn-floating btn-large blue">
+            <i class="large mdi-content-send"></i>
+        </a>
+    </div>
 </div>
 
 </body>

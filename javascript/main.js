@@ -1,16 +1,24 @@
-eb = new vertx.EventBus("http://localhost:8080/chat");
+eb = new vertx.EventBus("http://chatmap.cloudapp.net/chat");
 
 eb.onopen = function () {
     var topic = "main";
 
     subscribe(topic);
 
-    var input = $(".input");
+    function sendMessage(topic, input) {
+        publish(topic, input.val());
+        input.val('');
+    }
+
+    var input = $("#input");
     input.keyup(function (e) {
         if (e.keyCode == 13) {
-            publish(topic, input.val());
-            input.val('');
+            sendMessage(topic, input);
         }
+    });
+
+    $("#send-button").click(function(){
+        sendMessage(topic, input);
     });
 
     input.focus();
