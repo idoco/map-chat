@@ -1,4 +1,4 @@
-var focusOnInput = true;
+
 var eb;
 var retryCount = 5;
 var topic = "main";

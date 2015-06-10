@@ -37,7 +37,8 @@ function initialize() {
 
     userInfoWindow = new google.maps.InfoWindow({
         content: "",
-        maxWidth: 400
+        maxWidth: 400,
+        disableAutoPan: true
     });
 
     markersMap[mySessionId] = {
@@ -100,7 +101,8 @@ function displayMessage(msg){
     } else {
         var infoWindow = new google.maps.InfoWindow({
             content: msg.text,
-            maxWidth: 400
+            maxWidth: 400,
+            disableAutoPan: true
         });
 
         var marker = new google.maps.Marker({
