@@ -1,5 +1,5 @@
 # MapChat
-[Super simple location based chat](http://idoco.github.io/map-chat)
+A super simple location based chat - [Demo](http://idoco.github.io/map-chat)
 
 Steps:
 - Have Vert.x (2.1.5) installed in your path.
