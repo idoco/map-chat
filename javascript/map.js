@@ -54,8 +54,12 @@ function getLocation() {
         var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         userMaker.setPosition(latLng);
 
-        if (!userLocation) {
+        if (!userLocation) { // first time we get location
             userLocation = latLng;
+            if (connected){
+                // Sending a first message (empty)
+                publish(topic,"");
+            }
             map.panTo(userLocation);
         } else{
             userLocation = latLng;
@@ -88,7 +92,7 @@ function createMessage(text){
     };
 }
 
-function displayMessage(msg){
+function displayMessageOnMap(msg){
     var newPosition = new google.maps.LatLng(msg.lat,msg.lng);
     var msgSessionId = msg.sessionId;
     if(markersMap[msgSessionId]){
@@ -97,7 +101,9 @@ function displayMessage(msg){
 
         existingMarker.setPosition(newPosition);
         existingInfoWindow.setContent(msg.text);
-        existingInfoWindow.open(map, existingMarker);
+        if (msg.text) {
+            existingInfoWindow.open(map, existingMarker);
+        }
     } else {
         var infoWindow = new google.maps.InfoWindow({
             content: msg.text,
@@ -111,7 +117,9 @@ function displayMessage(msg){
             title: "User "+msgSessionId
         });
 
-        infoWindow.open(map, marker);
+        if (msg.text) {
+            infoWindow.open(map, marker);
+        }
 
         markersMap[msgSessionId] = {
             maker: marker,

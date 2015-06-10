@@ -2,12 +2,18 @@
 var eb;
 var retryCount = 5;
 var topic = "main";
+var connected = false;
 
 function initialiseEventBus(){
     eb = new vertx.EventBus("http://chatmap.cloudapp.net/chat");
 
     eb.onopen = function () {
         subscribe(topic);
+        connected = true;
+        if(userLocation){
+            // Sending a first message (empty)
+            publish(topic,"");
+        }
     };
 
     eb.onclose = function(){
@@ -36,7 +42,7 @@ function publish(address, message) {
 function subscribe(address) {
     if (eb) {
         eb.registerHandler(address, function (msg) {
-            displayMessage(msg);
+            displayMessageOnMap(msg);
         });
     }
 }
