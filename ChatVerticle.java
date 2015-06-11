@@ -1,4 +1,4 @@
-package MapChat;
+package opt;
 
 import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.Handler;
@@ -35,7 +35,6 @@ public class ChatVerticle extends Verticle {
 
     private static class ServerHook implements EventBusBridgeHook {
         private final Logger logger;
-        private DateFormat dateFormat = new SimpleDateFormat("dd/MM HH:mm:ss");
 
         public ServerHook(Logger logger) {
             this.logger = logger;
@@ -45,7 +44,7 @@ public class ChatVerticle extends Verticle {
         public boolean handleSocketCreated(SockJSSocket sock) {
             String origin = sock.headers().get("origin");
             // Reject the socket if not from our domain
-            return origin != null && (origin.startsWith("http://idoco.github.io/map-chat"));
+            return origin != null && (origin.startsWith("http://idoco.github.io"));
         }
 
         @Override
