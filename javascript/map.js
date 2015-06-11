@@ -32,6 +32,7 @@ function initialize() {
     userMaker = new google.maps.Marker({ // Set the marker
         position: defaultLatLng, // Position marker to coordinates
         map: map, // assign the marker to our map variable
+        draggable:true,
         title: 'Me!'
     });
 
@@ -114,6 +115,7 @@ function displayMessageOnMap(msg){
         var marker = new google.maps.Marker({
             position: newPosition,
             map: map,
+            draggable:true,
             title: "User "+msgSessionId
         });
 
