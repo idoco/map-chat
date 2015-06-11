@@ -11,8 +11,8 @@ function initialize() {
 
     var mapOptions = {
         center: defaultLatLng,
-        zoom: 16, // The initial zoom level when your map loads (0-20)
-        minZoom: 13, // Minimum zoom level allowed (0-20)
+        zoom: 15, // The initial zoom level when your map loads (0-20)
+        minZoom: 10, // Minimum zoom level allowed (0-20)
         maxZoom: 18, // Maximum soom level allowed (0-20)
         zoomControl:false, // Set to true if using zoomControlOptions below, or false to remove all zoom controls.
         mapTypeId: google.maps.MapTypeId.ROADMAP, // Set the type of Map
@@ -37,7 +37,8 @@ function initialize() {
 
     userInfoWindow = new google.maps.InfoWindow({
         content: "",
-        maxWidth: 400
+        maxWidth: 400,
+        disableAutoPan: true
     });
 
     markersMap[mySessionId] = {
@@ -53,8 +54,12 @@ function getLocation() {
         var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         userMaker.setPosition(latLng);
 
-        if (!userLocation) {
+        if (!userLocation) { // first time we get location
             userLocation = latLng;
+            if (connected){
+                // Sending a first message (empty)
+                publish(topic,"");
+            }
             map.panTo(userLocation);
         } else{
             userLocation = latLng;
@@ -87,7 +92,7 @@ function createMessage(text){
     };
 }
 
-function displayMessage(msg){
+function displayMessageOnMap(msg){
     var newPosition = new google.maps.LatLng(msg.lat,msg.lng);
     var msgSessionId = msg.sessionId;
     if(markersMap[msgSessionId]){
@@ -96,11 +101,14 @@ function displayMessage(msg){
 
         existingMarker.setPosition(newPosition);
         existingInfoWindow.setContent(msg.text);
-        existingInfoWindow.open(map, existingMarker);
+        if (msg.text) {
+            existingInfoWindow.open(map, existingMarker);
+        }
     } else {
         var infoWindow = new google.maps.InfoWindow({
             content: msg.text,
-            maxWidth: 400
+            maxWidth: 400,
+            disableAutoPan: true
         });
 
         var marker = new google.maps.Marker({
@@ -109,7 +117,9 @@ function displayMessage(msg){
             title: "User "+msgSessionId
         });
 
-        infoWindow.open(map, marker);
+        if (msg.text) {
+            infoWindow.open(map, marker);
+        }
 
         markersMap[msgSessionId] = {
             maker: marker,

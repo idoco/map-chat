@@ -1,36 +1,19 @@
-var focusOnInput = true;
+
 var eb;
 var retryCount = 5;
+var topic = "main";
+var connected = false;
 
 function initialiseEventBus(){
     eb = new vertx.EventBus("http://chatmap.cloudapp.net/chat");
 
     eb.onopen = function () {
-        var topic = "main";
-
         subscribe(topic);
-
-        function sendMessage(topic, input) {
-            publish(topic, input.val());
-            input.val('');
+        connected = true;
+        if(userLocation){
+            // Sending a first message (empty)
+            publish(topic,"");
         }
-
-        var input = $("#input");
-        input.keyup(function (e) {
-            if (e.keyCode == 13) {
-                sendMessage(topic, input);
-            }
-        });
-
-        $("#send-button").click(function(){
-            sendMessage(topic, input);
-        });
-
-        if (focusOnInput) {
-            input.focus();
-            focusOnInput = false;
-        }
-
     };
 
     eb.onclose = function(){
@@ -44,6 +27,11 @@ function initialiseEventBus(){
     };
 }
 
+function sendMessage(topic, input) {
+    publish(topic, input.val());
+    input.val('');
+}
+
 function publish(address, message) {
     if (eb) {
         var json = createMessage(message);
@@ -54,7 +42,7 @@ function publish(address, message) {
 function subscribe(address) {
     if (eb) {
         eb.registerHandler(address, function (msg) {
-            displayMessage(msg);
+            displayMessageOnMap(msg);
         });
     }
 }
@@ -65,5 +53,19 @@ $( document ).ready(function() {
     if(!Modernizr.websockets || !Modernizr.geolocation){
         Materialize.toast('Browser not supported :(', 10000);
     }
+
     $(".button-collapse").sideNav();
+
+    var input = $("#input");
+    input.keyup(function (e) {
+        if (e.keyCode == 13) {
+            sendMessage(topic, input);
+        }
+    });
+
+    $("#send-button").click(function(){
+        sendMessage(topic, input);
+    });
+
+    input.focus();
 });
