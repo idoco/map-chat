@@ -52,7 +52,7 @@ public class ChatVerticle extends Verticle {
             if (isValid(msg)){
                 return true;
             } else {
-                logger.error("Invalid Message rejected from remoteAddress ["+sock.remoteAddress()+"]");
+                logger.error("Invalid message rejected from remoteAddress ["+sock.remoteAddress()+"]");
                 return false;
             }
         }
