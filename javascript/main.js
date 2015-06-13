@@ -40,7 +40,7 @@ function subscribe(address) {
     if (eb) {
         eb.registerHandler(address, function (msg) {
             if (msg.newSessionId) {
-                mySessionId = msg.newSessionId;
+                setMySessionId(msg.newSessionId);
             } else {
                 displayMessageOnMap(msg);
             }

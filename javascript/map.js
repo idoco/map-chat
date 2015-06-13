@@ -45,6 +45,14 @@ function initialize() {
     getLocation();
 }
 
+function setMySessionId(newSessionId) {
+    mySessionId = newSessionId;
+    markersMap[mySessionId] = {
+        maker: userMaker,
+        infoWindow: userInfoWindow
+    };
+}
+
 function getLocation() {
     function newPosition(position) {
         var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -53,11 +61,6 @@ function getLocation() {
         if (!userLocation) { // first time we get location
             userLocation = latLng;
             if (mySessionId){
-                markersMap[mySessionId] = {
-                    maker: userMaker,
-                    infoWindow: userInfoWindow
-                };
-
                 // Sending a first message (empty)
                 publish(topic,"");
             }
