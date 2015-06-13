@@ -31,6 +31,37 @@
 //    }
 </script>
 
+<div class="navbar-fixed" style="height: 0">
+    <nav>
+        <div class="nav-wrapper blue">
+            <a href="#!" class="brand-logo">MapChat</a>
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="https://github.com/idoco/map-chat">Fork on GitHub</a></li>
+            </ul>
+            <ul class="side-nav" id="mobile-demo">
+                <li><a href="https://github.com/idoco/map-chat">Fork on GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div id="map-canvas"></div>
+
+<div class="center" style="position: fixed; bottom: 30px; width: 100%;">
+    <div class="input-field">
+        <input placeholder="Type a message" id="input" type="text" maxlength="101"
+               style="max-width: 58%;">
+    </div>
+</div>
+
+<div class="fixed-action-btn" style="bottom: 40px; right: 20px;">
+    <a id="send-button" class="btn-floating btn-large waves-effect waves-light blue">
+        <i class="large mdi-content-send"></i>
+    </a>
+</div>
+
+
 
 </body>
 </html>
