@@ -44,7 +44,7 @@ public class ChatVerticle extends Verticle {
         public boolean handleSocketCreated(SockJSSocket sock) {
             String origin = sock.headers().get("origin");
             // Reject the socket if not from our domain
-            return origin != null && (origin.startsWith("http://localhost:63342"));
+            return origin != null && (origin.startsWith("http://idoco.github.io"));
         }
 
         public boolean handlePreRegister(SockJSSocket sock, String address) {
