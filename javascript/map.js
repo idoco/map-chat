@@ -72,7 +72,6 @@ function getLocation() {
 
     function positionError(err) {
         console.error('Error(' + err.code + '): ' + err.message);
-        Materialize.toast('Failed to find your location :(', 5000);
     }
 
     if (navigator.geolocation) {
