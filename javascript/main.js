@@ -51,8 +51,6 @@ function subscribe(address) {
 initialiseEventBus();
 
 $( document ).ready(function() {
-    if (user)
-
     if(!Modernizr.websockets || !Modernizr.geolocation){
         Materialize.toast('Browser not supported :(', 10000);
     }
