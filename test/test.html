@@ -17,8 +17,17 @@
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCU8-Peh41jRM2kZEnvkaQzRacYCtMMrLc"></script>
 
 <script>
-    document.write(window.navigator.userAgent);
-    alert("test");
+
+    if (window.navigator.userAgent.indexOf("FB")) {
+        document.write(
+                        "<div class=\"center\" style=\"position: fixed; top: 120px; width: 100%;\">" +
+                        "<div class=\"\">" +
+                        "This page might not work well inside the facebook app" +
+                        "</div>" +
+                        "</div>"
+        );
+    }
+
 </script>
 
 
