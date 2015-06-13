@@ -19,7 +19,6 @@ function initialize() {
                     "</div>" +
                 "</div>"
         );
-        return;
     }
 
     var defaultLatLng = new google.maps.LatLng(32.078043, 34.774177); // Add the coordinates
