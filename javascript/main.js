@@ -23,8 +23,10 @@ function initialiseEventBus(){
 }
 
 function sendMessage(topic, input) {
-    publish(topic, input.val());
-    input.val('');
+    if (input.val()) {
+        publish(topic, input.val());
+        input.val('');
+    }
 }
 
 function publish(address, message) {
