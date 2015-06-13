@@ -1,7 +1,7 @@
 
-var mySessionId = Math.floor((Math.random() * 10000000) + 1);
+var mySessionId;
 var map;
-var userLocation = null;
+var userLocation;
 var userMaker;
 var userInfoWindow;
 var markersMap = {};
@@ -42,11 +42,6 @@ function initialize() {
         disableAutoPan: true
     });
 
-    markersMap[mySessionId] = {
-        maker: userMaker,
-        infoWindow: userInfoWindow
-    };
-
     getLocation();
 }
 
@@ -57,7 +52,12 @@ function getLocation() {
 
         if (!userLocation) { // first time we get location
             userLocation = latLng;
-            if (connected){
+            if (mySessionId){
+                markersMap[mySessionId] = {
+                    maker: userMaker,
+                    infoWindow: userInfoWindow
+                };
+
                 // Sending a first message (empty)
                 publish(topic,"");
             }

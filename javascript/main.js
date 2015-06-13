@@ -9,11 +9,6 @@ function initialiseEventBus(){
 
     eb.onopen = function () {
         subscribe(topic);
-        connected = true;
-        if(userLocation){
-            // Sending a first message (empty)
-            publish(topic,"");
-        }
     };
 
     eb.onclose = function(){
@@ -42,7 +37,11 @@ function publish(address, message) {
 function subscribe(address) {
     if (eb) {
         eb.registerHandler(address, function (msg) {
-            displayMessageOnMap(msg);
+            if (msg.newSessionId) {
+                mySessionId = msg.newSessionId;
+            } else {
+                displayMessageOnMap(msg);
+            }
         });
     }
 }
