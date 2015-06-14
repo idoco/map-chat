@@ -13,7 +13,7 @@ function initialize() {
     var mapOptions = {
         center: defaultLatLng,
         zoom: 15, // The initial zoom level when your map loads (0-20)
-        minZoom: 10, // Minimum zoom level allowed (0-20)
+        minZoom: 4, // Minimum zoom level allowed (0-20)
         maxZoom: 18, // Maximum soom level allowed (0-20)
         zoomControl:false, // Set to true if using zoomControlOptions below, or false to remove all zoom controls.
         mapTypeId: google.maps.MapTypeId.ROADMAP, // Set the type of Map
