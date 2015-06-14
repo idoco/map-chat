@@ -1,12 +1,13 @@
 
-var mySessionId = Math.floor((Math.random() * 10000000) + 1);
+var mySessionId;
 var map;
-var userLocation = null;
+var userLocation;
 var userMaker;
 var userInfoWindow;
 var markersMap = {};
 
 function initialize() {
+
     var defaultLatLng = new google.maps.LatLng(32.078043, 34.774177); // Add the coordinates
 
     var mapOptions = {
@@ -32,6 +33,7 @@ function initialize() {
     userMaker = new google.maps.Marker({ // Set the marker
         position: defaultLatLng, // Position marker to coordinates
         map: map, // assign the marker to our map variable
+        draggable:true,
         title: 'Me!'
     });
 
@@ -41,12 +43,15 @@ function initialize() {
         disableAutoPan: true
     });
 
+    getLocation();
+}
+
+function setMySessionId(newSessionId) {
+    mySessionId = newSessionId;
     markersMap[mySessionId] = {
         maker: userMaker,
         infoWindow: userInfoWindow
     };
-
-    getLocation();
 }
 
 function getLocation() {
@@ -56,7 +61,7 @@ function getLocation() {
 
         if (!userLocation) { // first time we get location
             userLocation = latLng;
-            if (connected){
+            if (mySessionId){
                 // Sending a first message (empty)
                 publish(topic,"");
             }
@@ -68,7 +73,6 @@ function getLocation() {
 
     function positionError(err) {
         console.error('Error(' + err.code + '): ' + err.message);
-        Materialize.toast('Failed to find your location :(', 5000);
     }
 
     if (navigator.geolocation) {
@@ -95,6 +99,7 @@ function createMessage(text){
 function displayMessageOnMap(msg){
     var newPosition = new google.maps.LatLng(msg.lat,msg.lng);
     var msgSessionId = msg.sessionId;
+    msg.text = msg.text.replace('>',''); // xss prevention hack
     if(markersMap[msgSessionId]){
         var existingMarker = markersMap[msgSessionId].maker;
         var existingInfoWindow = markersMap[msgSessionId].infoWindow;
@@ -114,6 +119,7 @@ function displayMessageOnMap(msg){
         var marker = new google.maps.Marker({
             position: newPosition,
             map: map,
+            draggable:true,
             title: "User "+msgSessionId
         });
 
@@ -128,4 +134,17 @@ function displayMessageOnMap(msg){
     }
 }
 
-google.maps.event.addDomListener(window, 'load', initialize);
+if (window.navigator.userAgent.indexOf("FBAV") > 0) {
+    document.write(
+            "<div class=\"center\" style=\"position: fixed; top: 120px; width: 100%;\">" +
+                "<div class=\"\">" +
+                    "<h6>" +
+                        "This page will not work inside the facebook app, " +
+                        "please open it in the native browser." +
+                    "</h6>" +
+                "</div>" +
+            "</div>"
+    );
+}  else {
+    google.maps.event.addDomListener(window, 'load', initialize);
+}
