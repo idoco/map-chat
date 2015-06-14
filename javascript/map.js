@@ -99,6 +99,7 @@ function createMessage(text){
 function displayMessageOnMap(msg){
     var newPosition = new google.maps.LatLng(msg.lat,msg.lng);
     var msgSessionId = msg.sessionId;
+    msg.text.replace('>','');
     if(markersMap[msgSessionId]){
         var existingMarker = markersMap[msgSessionId].maker;
         var existingInfoWindow = markersMap[msgSessionId].infoWindow;
