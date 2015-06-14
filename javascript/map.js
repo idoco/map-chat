@@ -133,7 +133,7 @@ function displayMessageOnMap(msg){
     }
 }
 
-if (window.navigator.userAgent.indexOf("FB") > 0) {
+if (window.navigator.userAgent.indexOf("FBAV") > 0) {
     document.write(
             "<div class=\"center\" style=\"position: fixed; top: 120px; width: 100%;\">" +
                 "<div class=\"\">" +
