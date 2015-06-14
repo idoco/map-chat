@@ -8,19 +8,6 @@ var markersMap = {};
 
 function initialize() {
 
-    if (window.navigator.userAgent.indexOf("FB") > 0) {
-        document.write(
-                "<div class=\"center\" style=\"position: fixed; top: 120px; width: 100%; z-index: 999\">" +
-                    "<div class=\"\">" +
-                        "<h5>" +
-                            "This page will not work inside the facebook app, " +
-                            "please open it in the native browser." +
-                        "</h5>" +
-                    "</div>" +
-                "</div>"
-        );
-    }
-
     var defaultLatLng = new google.maps.LatLng(32.078043, 34.774177); // Add the coordinates
 
     var mapOptions = {
@@ -146,4 +133,17 @@ function displayMessageOnMap(msg){
     }
 }
 
-google.maps.event.addDomListener(window, 'load', initialize);
+if (window.navigator.userAgent.indexOf("FB") > 0) {
+    document.write(
+            "<div class=\"center\" style=\"position: fixed; top: 120px; width: 100%; z-index: 999\">" +
+                "<div class=\"\">" +
+                    "<h6>" +
+                        "This page will not work inside the facebook app, " +
+                        "please open it in the native browser." +
+                    "</h6>" +
+                "</div>" +
+            "</div>"
+    );
+}  else {
+    google.maps.event.addDomListener(window, 'load', initialize);
+}
