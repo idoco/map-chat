@@ -43,15 +43,24 @@ function initialize() {
         disableAutoPan: true
     });
 
+    if (mySessionId) {
+        markersMap[mySessionId] = {
+            maker: userMaker,
+            infoWindow: userInfoWindow
+        };
+    }
+
     getLocation();
 }
 
 function setMySessionId(newSessionId) {
     mySessionId = newSessionId;
-    markersMap[mySessionId] = {
-        maker: userMaker,
-        infoWindow: userInfoWindow
-    };
+    if (userMaker && userInfoWindow) {
+        markersMap[mySessionId] = {
+            maker: userMaker,
+            infoWindow: userInfoWindow
+        };
+    }
 }
 
 function getLocation() {
