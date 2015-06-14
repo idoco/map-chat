@@ -135,7 +135,7 @@ function displayMessageOnMap(msg){
 
 if (window.navigator.userAgent.indexOf("FB") > 0) {
     document.write(
-            "<div class=\"center\" style=\"position: fixed; top: 120px; width: 100%; z-index: 999\">" +
+            "<div class=\"center\" style=\"position: fixed; top: 120px; width: 100%;\">" +
                 "<div class=\"\">" +
                     "<h6>" +
                         "This page will not work inside the facebook app, " +
