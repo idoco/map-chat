@@ -2,7 +2,6 @@
 var eb;
 var retryCount = 5;
 var topic = "main";
-var connected = false;
 
 function initialiseEventBus(){
     eb = new vertx.EventBus("http://chatmap.cloudapp.net/chat");
@@ -41,6 +40,10 @@ function subscribe(address) {
         eb.registerHandler(address, function (msg) {
             if (msg.newSessionId) {
                 setMySessionId(msg.newSessionId);
+                if(userLocation){
+                    // Sending a first message (empty)
+                    publish(topic,"");
+                }
             } else {
                 displayMessageOnMap(msg);
             }
