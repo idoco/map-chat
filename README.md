@@ -3,7 +3,11 @@ A super simple location based chat - [Demo](http://idoco.github.io/map-chat)
 
 ![](https://raw.githubusercontent.com/idoco/map-chat/master/map-chat.png)
 
-How to deploy:
+## Features
+- Super simple location based chat.
+- Create a private chat map by adding #name to the url.
+
+## How to deploy your own instance
 - Have Vert.x (2.1.5) installed in your path.
 - Run the server with "vertx run ChatVerticle.java".
 - Open index.html.
