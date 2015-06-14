@@ -12,4 +12,4 @@ How to deploy:
 ## Contributing To MapChat
 - Use GitHub Issues to report bugs and suggest new features. 
 - Please search the existing issues for your bug and create a new one only if the issue is not yet tracked!
-- Feel free to fork this project and suggest new features as pull requests
+- Feel free to fork this project and suggest new features as pull requests.
