@@ -4,7 +4,7 @@ var retryCount = 5;
 var topic = "main";
 
 function initialiseEventBus(){
-    eb = new vertx.EventBus("http://chatmap.cloudapp.net/chat");
+    eb = new vertx.EventBus("http://localhost:8080/chat");
 
     eb.onopen = function () {
         subscribe(topic);
