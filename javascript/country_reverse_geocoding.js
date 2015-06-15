@@ -1,6 +1,6 @@
 /**
  *
- * Curently unused
+ * Currently unused
  *
  * Reverse geocoding for countries
  * This wasn't written by me
