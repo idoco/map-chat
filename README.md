@@ -5,6 +5,7 @@ A super simple location based chat - [Demo](http://idoco.github.io/map-chat)
 
 ## Features
 - Super simple location based chat.
+- No registration or message history.
 - Create a private chat map by adding <i>#name</i> to the url.
 
 ## How to deploy your own instance
