@@ -42,7 +42,7 @@ function subscribe(address) {
     if (eb) {
         eb.registerHandler(address, function (msg) {
             if (msg.newSessionId) {
-                setMySessionId(msg.newSessionId);
+                mySessionId = msg.newSessionId;
                 if(userLocation){
                     // Sending a first message (empty)
                     publish(topic,"");

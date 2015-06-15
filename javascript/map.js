@@ -2,13 +2,17 @@
 var mySessionId;
 var map;
 var userLocation;
-var userMaker;
-var userInfoWindow;
 var markersMap = {};
+var markerImage;
 
 function initialize() {
 
     var defaultLatLng = new google.maps.LatLng(32.078043, 34.774177); // Add the coordinates
+
+    markerImage = {
+        url: 'images/blue_marker.png',
+        scaledSize: new google.maps.Size(30, 30)
+    };
 
     var mapOptions = {
         center: defaultLatLng,
@@ -27,46 +31,15 @@ function initialize() {
         overviewMapControl:false, // Set to false to remove overview control
         rotateControl:false // Set to false to disable rotate control
     };
-    var mapDiv = document.getElementById('map-canvas');
+    var mapDiv = $('#map-canvas');
     map = new google.maps.Map(mapDiv, mapOptions);
 
-    userMaker = new google.maps.Marker({ // Set the marker
-        position: defaultLatLng, // Position marker to coordinates
-        map: map, // assign the marker to our map variable
-        draggable:true,
-        title: 'Me!'
-    });
-
-    userInfoWindow = new google.maps.InfoWindow({
-        content: "",
-        maxWidth: 400,
-        disableAutoPan: true
-    });
-
-    if (mySessionId) {
-        markersMap[mySessionId] = {
-            maker: userMaker,
-            infoWindow: userInfoWindow
-        };
-    }
-
-    getLocation();
+    setupWatchPosition();
 }
 
-function setMySessionId(newSessionId) {
-    mySessionId = newSessionId;
-    if (userMaker && userInfoWindow) {
-        markersMap[mySessionId] = {
-            maker: userMaker,
-            infoWindow: userInfoWindow
-        };
-    }
-}
-
-function getLocation() {
-    function newPosition(position) {
+function setupWatchPosition() {
+    function onNewPosition(position) {
         var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        userMaker.setPosition(latLng);
 
         if (!userLocation) { // first time we get location
             userLocation = latLng;
@@ -75,22 +48,24 @@ function getLocation() {
                 publish(topic,"");
             }
             map.panTo(userLocation);
-        } else{
+        } else if (mySessionId && markersMap[mySessionId]) { //update user marker position
             userLocation = latLng;
+            var userMarker = markersMap[mySessionId].marker;
+            userMarker.setPosition(userLocation);
         }
     }
 
-    function positionError(err) {
+    function onPositionError(err) {
         console.error('Error(' + err.code + '): ' + err.message);
     }
 
     if (navigator.geolocation) {
-        var options = {
+        var watchOptions = {
             enableHighAccuracy: true,
             timeout: 5000,
             maximumAge: 5000
         };
-        navigator.geolocation.watchPosition(newPosition, positionError, options);
+        navigator.geolocation.watchPosition(onNewPosition, onPositionError, watchOptions);
     } else {
         Materialize.toast('Browser not supported :(', 7000);
     }
@@ -98,7 +73,6 @@ function getLocation() {
 
 function createMessage(text){
     return {
-        sessionId: mySessionId,
         lat:userLocation.lat(),
         lng: userLocation.lng(),
         text: text
@@ -109,8 +83,9 @@ function displayMessageOnMap(msg){
     var newPosition = new google.maps.LatLng(msg.lat,msg.lng);
     var msgSessionId = msg.sessionId;
     msg.text = msg.text.replace('>',''); // xss prevention hack
-    if(markersMap[msgSessionId]){
-        var existingMarker = markersMap[msgSessionId].maker;
+
+    if(markersMap[msgSessionId]){ // update existing marker
+        var existingMarker = markersMap[msgSessionId].marker;
         var existingInfoWindow = markersMap[msgSessionId].infoWindow;
 
         existingMarker.setPosition(newPosition);
@@ -118,7 +93,7 @@ function displayMessageOnMap(msg){
         if (msg.text) {
             existingInfoWindow.open(map, existingMarker);
         }
-    } else {
+    } else { // new marker
         var infoWindow = new google.maps.InfoWindow({
             content: msg.text,
             maxWidth: 400,
@@ -129,6 +104,7 @@ function displayMessageOnMap(msg){
             position: newPosition,
             map: map,
             draggable:true,
+            icon: markerImage,
             title: "User "+msgSessionId
         });
 
@@ -137,21 +113,22 @@ function displayMessageOnMap(msg){
         }
 
         markersMap[msgSessionId] = {
-            maker: marker,
+            marker: marker,
             infoWindow: infoWindow
         }
     }
 }
 
+// This should be displayed when the app is opened from a mobile facebook app WebView (Until a better solution is found)
 if (window.navigator.userAgent.indexOf("FBAV") > 0) {
     document.write(
             "<div class=\"center\" style=\"position: fixed; top: 120px; width: 100%;\">" +
-                "<div class=\"\">" +
-                    "<h6>" +
-                        "This page will not work inside the facebook app, " +
-                        "please open it in the native browser." +
-                    "</h6>" +
-                "</div>" +
+            "<div class=\"\">" +
+            "<h6>" +
+            "This page will not work inside the facebook app, " +
+            "please open it in the native browser." +
+            "</h6>" +
+            "</div>" +
             "</div>"
     );
 }  else {

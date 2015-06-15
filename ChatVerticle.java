@@ -42,8 +42,8 @@ public class ChatVerticle extends Verticle {
 
         @Override
         public boolean handleSocketCreated(SockJSSocket sock) {
-            String origin = sock.headers().get("origin");
             // Reject the socket if not from our domain
+            String origin = sock.headers().get("origin");
             return origin != null && (origin.startsWith("http://idoco.github.io"));
         }
 
@@ -64,15 +64,10 @@ public class ChatVerticle extends Verticle {
 
         @Override
         public boolean handleSendOrPub(SockJSSocket sock, boolean send, JsonObject msg, String address) {
+            String sessionId = sock.writeHandlerID();
+
             if (msg.toString().length() > 256) {
                 logger.error("Invalid Message rejected from remote address ["+sock.remoteAddress()+"] (msg too long) ");
-                return false;
-            }
-
-            String sessionId = msg.getObject("body").getString("sessionId");
-            if (!sock.writeHandlerID().equals(sessionId)){
-                logger.error("Invalid Message rejected from remote address ["+sock.remoteAddress()+"] " +
-                        "(sessionId does not match)");
                 return false;
             }
 
@@ -83,6 +78,8 @@ public class ChatVerticle extends Verticle {
                         "(Rate too high)");
                 return false;
             }
+
+            msg.getObject("body").putString("sessionId",sessionId);
 
             sessionIdToLastMessageTime.put(sessionId,currentTimeMillis);
             return true;
