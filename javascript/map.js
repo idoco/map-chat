@@ -31,7 +31,7 @@ function initialize() {
         overviewMapControl:false, // Set to false to remove overview control
         rotateControl:false // Set to false to disable rotate control
     };
-    var mapDiv = $('#map-canvas');
+    var mapDiv = document.getElementById('map-canvas');
     map = new google.maps.Map(mapDiv, mapOptions);
 
     setupWatchPosition();
