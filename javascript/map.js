@@ -4,6 +4,7 @@ var map;
 var userLocation;
 var markersMap = {};
 var markerImage;
+var advanced = false;
 
 function initialize() {
 
@@ -117,6 +118,21 @@ function displayMessageOnMap(msg){
             infoWindow: infoWindow
         }
     }
+
+    if (advanced){
+        runAdvancedOptions(msg.text);
+    }
+}
+
+function runAdvancedOptions(msgText){
+    if (Notification.permission !== "granted"){
+        Notification.requestPermission();
+    }
+
+    new Notification('Incoming MapChat', {
+        icon: 'favicons/apple-touch-icon-120x120.png',
+        body: msgText ? "Incoming message: "+msgText : "New user"
+    });
 }
 
 // This should be displayed when the app is opened from a mobile facebook app WebView (Until a better solution is found)
