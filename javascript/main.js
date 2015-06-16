@@ -1,10 +1,13 @@
 
 var eb;
 var retryCount = 5;
-var topic = "main";
+
+// Support dynamic topic registration by #word
+var urlHashTopic = location.hash ? location.hash.substring(1).toLowerCase() : null;
+var topic = urlHashTopic ? urlHashTopic : "main";
 
 function initialiseEventBus(){
-    eb = new vertx.EventBus("http://chatmap.cloudapp.net/chat");
+    eb = new vertx.EventBus("http://localhost:8080/chat");
 
     eb.onopen = function () {
         subscribe(topic);
@@ -39,7 +42,7 @@ function subscribe(address) {
     if (eb) {
         eb.registerHandler(address, function (msg) {
             if (msg.newSessionId) {
-                setMySessionId(msg.newSessionId);
+                mySessionId = msg.newSessionId;
                 if(userLocation){
                     // Sending a first message (empty)
                     publish(topic,"");
