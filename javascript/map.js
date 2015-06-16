@@ -120,18 +120,22 @@ function displayMessageOnMap(msg){
     }
 
     if (advanced){
-        runAdvancedOptions(msg.text);
+        runAdvancedOptions(msg);
     }
 }
 
-function runAdvancedOptions(msgText){
+function runAdvancedOptions(msg){
+    if (msg.sessionId == mySessionId){
+        return;
+    }
+
     if (Notification.permission !== "granted"){
         Notification.requestPermission();
     }
 
     new Notification('Incoming MapChat', {
         icon: 'favicons/apple-touch-icon-120x120.png',
-        body: msgText ? "Incoming message: "+msgText : "New user"
+        body: msg.text ? "Incoming message: "+msg.text : "New user"
     });
 }
 
