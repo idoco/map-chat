@@ -23,7 +23,7 @@
 
 <body>
 
-<div class="navbar-fixed" style="height: 0">
+<div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper blue">
             <a class="brand-logo">MapChat</a>
@@ -40,14 +40,13 @@
 
 <div id="map-canvas"></div>
 
-<div class="center" style="position: fixed; bottom: 30px; width: 100%;">
+<div class="center input-wrapper">
     <div class="input-field">
-        <input placeholder="Type a message" id="input" type="text" maxlength="101"
-               style="max-width: 58%;">
+        <input placeholder="Type a message" id="input" type="text" maxlength="101">
     </div>
 </div>
 
-<div class="fixed-action-btn" style="bottom: 40px; right: 20px;">
+<div class="fixed-action-btn">
     <a id="send-button" class="btn-floating btn-large waves-effect waves-light blue">
         <i class="large mdi-content-send"></i>
     </a>
@@ -58,7 +57,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
 <script src="http://cdn.jsdelivr.net/sockjs/1.0.0/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vertx/2.0.0/vertxbus.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCU8-Peh41jRM2kZEnvkaQzRacYCtMMrLc"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&language=en&key=AIzaSyCU8-Peh41jRM2kZEnvkaQzRacYCtMMrLc"></script>
 
 <script type="text/javascript" src="javascript/modernizr.custom.js"></script>
 <script src="javascript/main.js"></script>
