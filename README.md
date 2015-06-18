@@ -1,5 +1,5 @@
-# MapChat
-A super simple location based chat - [Demo](http://idoco.github.io/map-chat)
+# MapChat - [Demo](http://idoco.github.io/map-chat)
+A super simple location based chat 
 
 ![](https://raw.githubusercontent.com/idoco/map-chat/master/map-chat.png)
 
