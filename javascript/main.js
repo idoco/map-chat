@@ -7,7 +7,7 @@ var urlHashTopic = location.hash ? location.hash.substring(1).toLowerCase() : nu
 var topic = urlHashTopic ? urlHashTopic : "main";
 
 function initialiseEventBus(){
-    eb = new vertx.EventBus("http://localhost:8080/chat");
+    eb = new vertx.EventBus("http://chatmap.cloudapp.net/chat");
 
     eb.onopen = function () {
         subscribe(topic);

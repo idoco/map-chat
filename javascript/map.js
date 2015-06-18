@@ -4,6 +4,7 @@ var map;
 var userLocation;
 var markersMap = {};
 var markerImage;
+var advanced = false;
 
 function initialize() {
 
@@ -16,8 +17,8 @@ function initialize() {
 
     var mapOptions = {
         center: defaultLatLng,
-        zoom: 8, // The initial zoom level when your map loads (0-20)
-        minZoom: 4, // Minimum zoom level allowed (0-20)
+        zoom: 9, // The initial zoom level when your map loads (0-20)
+        minZoom: 3, // Minimum zoom level allowed (0-20)
         maxZoom: 18, // Maximum soom level allowed (0-20)
         zoomControl:false, // Set to true if using zoomControlOptions below, or false to remove all zoom controls.
         mapTypeId: google.maps.MapTypeId.ROADMAP, // Set the type of Map
@@ -90,11 +91,6 @@ function displayMessageOnMap(msg){
 
         existingMarker.setPosition(newPosition);
         existingInfoWindow.setContent(msg.text);
-
-        if (Object.keys(markersMap).length == 2){
-            Materialize.toast('You might need to zoom out to see other users:) ', 5000);
-        }
-
         if (msg.text) {
             existingInfoWindow.open(map, existingMarker);
         }
@@ -122,6 +118,25 @@ function displayMessageOnMap(msg){
             infoWindow: infoWindow
         }
     }
+
+    if (advanced){
+        runAdvancedOptions(msg);
+    }
+}
+
+function runAdvancedOptions(msg){
+    if (msg.sessionId == mySessionId){
+        return;
+    }
+
+    if (Notification.permission !== "granted"){
+        Notification.requestPermission();
+    }
+
+    new Notification('Incoming MapChat', {
+        icon: 'favicons/apple-touch-icon-120x120.png',
+        body: msg.text ? "Incoming message: "+msg.text : "New user"
+    });
 }
 
 // This should be displayed when the app is opened from a mobile facebook app WebView (Until a better solution is found)
