@@ -18,3 +18,6 @@ A super simple location based chat - [Demo](http://idoco.github.io/map-chat)
 - Use GitHub Issues to report bugs and suggest new features. 
 - Please search the existing issues for your bug and create a new one only if the issue is not yet tracked!
 - Feel free to fork this project and suggest new features as pull requests.
+
+## [Demo](http://idoco.github.io/map-chat)
+This demo is hosted on GitHub pages and uses a single core Azure instance as the Vert.x SockJS server.
