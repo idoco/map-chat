@@ -87,9 +87,11 @@ public class ChatVerticle extends Verticle {
 
             long currentTimeMillis = System.currentTimeMillis();
             Long lastMessageTime = sessionIdToLastMessageTime.get(sessionId);
-            if (lastMessageTime != null && currentTimeMillis - lastMessageTime < 1000){
+            if (lastMessageTime != null && currentTimeMillis - lastMessageTime < 500){
                 logger.error("Invalid Message rejected from remote address ["+sock.remoteAddress()+"] " +
                         "(Rate too high)");
+                blackList.add(sock.remoteAddress().getAddress().toString());
+                sock.close();
                 return false;
             }
 
