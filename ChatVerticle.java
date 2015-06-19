@@ -12,16 +12,16 @@ import org.vertx.java.core.sockjs.SockJSServer;
 import org.vertx.java.core.sockjs.SockJSSocket;
 import org.vertx.java.platform.Verticle;
 
+import java.lang.String;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class ChatVerticle extends Verticle {
 
-    public static final List<String> blackList = Arrays.asList(
-            "/88.156.136.13",
-            "/88.156.136.13:49291");
+    public static final List<String> blackList = new ArrayList<String>();
 
     Logger logger;
 
