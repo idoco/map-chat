@@ -91,6 +91,8 @@ function displayMessageOnMap(msg){
             .replace(';','')
             .replace('/','')
             .replace('\\','')
+            .replace('\'','')
+            .replace('\"','')
             .replace('!important','');
 
     if(markersMap[msgSessionId]){ // update existing marker
