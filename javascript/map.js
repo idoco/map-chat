@@ -88,6 +88,7 @@ function displayMessageOnMap(msg){
     msg.text =
         msg.text.replace('>','')
             .replace('<','')
+            .replace(';','')
             .replace('!important','');
 
     if(markersMap[msgSessionId]){ // update existing marker
