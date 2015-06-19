@@ -143,12 +143,12 @@ function runAdvancedOptions(msg){
 if (window.navigator.userAgent.indexOf("FBAV") > 0) {
     document.write(
             "<div class=\"center\" style=\"position: fixed; top: 120px; width: 100%;\">" +
-            "<div class=\"\">" +
-            "<h6>" +
-            "This page will not work inside the facebook app, " +
-            "please open it in the native browser." +
-            "</h6>" +
-            "</div>" +
+                "<div class=\"\">" +
+                    "<h6>" +
+                        "This page will not work inside the facebook app, " +
+                        "please open it in the native browser." +
+                    "</h6>" +
+                "</div>" +
             "</div>"
     );
 }  else {

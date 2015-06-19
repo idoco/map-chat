@@ -74,5 +74,19 @@ $( document ).ready(function() {
         sendMessage(topic, input);
     });
 
+    var $notifyOnBar = $("#notify_on_bar");
+    var $notifyOnSide = $("#notify_on_side");
+
+    function bindNotificationState(a,b){
+        a.change(function() {
+            b.prop("checked", this.checked);
+            advanced = !advanced;
+            Materialize.toast(advanced ? 'Notifications On' : 'Notifications Off', 3000);
+        });
+    }
+
+    bindNotificationState($notifyOnBar,$notifyOnSide);
+    bindNotificationState($notifyOnSide,$notifyOnBar);
+
     input.focus();
 });
