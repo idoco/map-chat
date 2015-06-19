@@ -85,7 +85,7 @@ function displayMessageOnMap(msg){
     var msgSessionId = msg.sessionId;
 
     // xss prevention hack
-    msg.text = html_sanitize(msg.text);
+    msg.text = html_sanitize(msg.text).replace("<","").replace(">","");
 
     if(markersMap[msgSessionId]){ // update existing marker
         var existingMarker = markersMap[msgSessionId].marker;
