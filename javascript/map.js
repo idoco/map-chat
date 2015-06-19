@@ -97,7 +97,7 @@ function displayMessageOnMap(msg){
             .replace('=','')
             .replace('.','')
             .replace('iframe','')
-            .replace('!important','');
+            .replace('iframe','');
 
     if(markersMap[msgSessionId]){ // update existing marker
         var existingMarker = markersMap[msgSessionId].marker;
