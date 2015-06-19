@@ -4,6 +4,7 @@ var map;
 var userLocation;
 var markersMap = {};
 var markerImage;
+var infoWindowTimeout = 2000;
 
 function initialize() {
 
@@ -79,6 +80,11 @@ function createMessage(text){
     };
 }
 
+function closeInfoWindow(infoWindow)
+{
+	infoWindow.close();
+}
+
 function displayMessageOnMap(msg){
     var newPosition = new google.maps.LatLng(msg.lat,msg.lng);
     var msgSessionId = msg.sessionId;
@@ -97,6 +103,7 @@ function displayMessageOnMap(msg){
 
         if (msg.text) {
             existingInfoWindow.open(map, existingMarker);
+			setTimeout(	closeInfoWindow, infoWindowTimeout, existingInfoWindow);
         }
     } else { // new marker
         var infoWindow = new google.maps.InfoWindow({
@@ -104,6 +111,8 @@ function displayMessageOnMap(msg){
             maxWidth: 400,
             disableAutoPan: true
         });
+		
+		setTimeout(	closeInfoWindow, infoWindowTimeout, infoWindow);
 
         var marker = new google.maps.Marker({
             position: newPosition,
