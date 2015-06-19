@@ -83,7 +83,7 @@ function createMessage(text){
 function displayMessageOnMap(msg){
     var newPosition = new google.maps.LatLng(msg.lat,msg.lng);
     var msgSessionId = msg.sessionId;
-    msg.text = msg.text.replace('>',''); // xss prevention hack
+    msg.text = msg.text.replace('>','').replace('!important',''); // xss prevention hack
 
     if(markersMap[msgSessionId]){ // update existing marker
         var existingMarker = markersMap[msgSessionId].marker;
