@@ -6,6 +6,15 @@ var markersMap = {};
 var markerImage;
 var advanced = false;
 
+var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;'
+};
+
 function initialize() {
 
     var defaultLatLng = new google.maps.LatLng(32.078043, 34.774177); // Add the coordinates
@@ -85,7 +94,13 @@ function displayMessageOnMap(msg){
     var msgSessionId = msg.sessionId;
 
     // xss prevention hack
-    msg.text = html_sanitize(msg.text).replace("<","").replace(">","");
+    msg.text = html_sanitize(msg.text);
+
+    msg.text = String(msg.text).replace(/[&<>"'\/]/g, function (s) {
+        return entityMap[s];
+    });
+
+
 
     if(markersMap[msgSessionId]){ // update existing marker
         var existingMarker = markersMap[msgSessionId].marker;
