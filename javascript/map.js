@@ -94,6 +94,7 @@ function displayMessageOnMap(msg){
             .replace('\'','')
             .replace('\"','')
             .replace(':','')
+            .replace('=','')
             .replace('iframe','')
             .replace('!important','');
 
