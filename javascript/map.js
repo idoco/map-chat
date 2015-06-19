@@ -85,19 +85,7 @@ function displayMessageOnMap(msg){
     var msgSessionId = msg.sessionId;
 
     // xss prevention hack
-    msg.text =
-        msg.text.replace('>','')
-            .replace('<','')
-            .replace(';','')
-            .replace('/','')
-            .replace('\\','')
-            .replace('\'','')
-            .replace('\"','')
-            .replace(':','')
-            .replace('=','')
-            .replace('.','')
-            .replace('iframe','')
-            .replace('iframe','');
+    msg.text = html_sanitize(msg.text);
 
     if(markersMap[msgSessionId]){ // update existing marker
         var existingMarker = markersMap[msgSessionId].marker;
