@@ -103,7 +103,7 @@ function displayMessageOnMap(msg){
     });
 
     // lets hope this won't be used in a bad way :)
-    msg.text = msg.text.replace(/#(\S*)/g,'<a href="#$1" target="_blank">$1</a>');
+    // msg.text = msg.text.replace(/#(\S*)/g,'<a href="#$1" target="_blank">$1</a>');
 
     if(markersMap[msgSessionId]){ // update existing marker
         var existingMarker = markersMap[msgSessionId].marker;
