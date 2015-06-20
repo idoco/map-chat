@@ -13,7 +13,8 @@ var entityMap = {
     '"': '&quot;',
     "'": '&#39;',
     "/": '&#x2F;',
-    "卐": 'I am a dick '
+    "卐": 'I am a dick ',
+    "卍": 'I am a dick '
 };
 
 function initialize() {
@@ -97,7 +98,7 @@ function displayMessageOnMap(msg){
     // xss prevention hack
     msg.text = html_sanitize(msg.text);
 
-    msg.text = String(msg.text).replace(/[&<>"'\/卐]/g, function (s) {
+    msg.text = String(msg.text).replace(/[&<>"'\/卐卍]/g, function (s) {
         return entityMap[s];
     });
 
