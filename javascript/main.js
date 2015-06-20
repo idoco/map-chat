@@ -89,4 +89,8 @@ $( document ).ready(function() {
     bindNotificationState($notifyOnSide,$notifyOnBar);
 
     input.focus();
+
+    if (topic != "main"){
+        Materialize.toast("Private chat map - "+topic, 5000);
+    }
 });
