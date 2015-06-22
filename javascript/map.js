@@ -1,3 +1,4 @@
+
 var mySessionId;
 var map;
 var userLocation;
@@ -108,10 +109,16 @@ function displayMessageOnMap(msg){
         var existingMarker = markersMap[msgSessionId].marker;
         var existingInfoWindow = markersMap[msgSessionId].infoWindow;
 
+        var existingTimeoutId = markersMap[msgSessionId].timeoutId;
         existingMarker.setPosition(newPosition);
         existingInfoWindow.setContent(msg.text);
         if (msg.text) {
-            existingInfoWindow.open(map, existingMarker);
+             if (existingTimeoutId){
+                clearTimeout(existingTimeoutId);
+            }
+            markersMap[msgSessionId].timeoutId =
+                setTimeout(function() { existingInfoWindow.close() }, 10000);
+           existingInfoWindow.open(map, existingMarker);
         }
     } else { // new marker
         var infoWindow = new google.maps.InfoWindow({
@@ -132,10 +139,12 @@ function displayMessageOnMap(msg){
             infoWindow.open(map, marker);
         }
 
-        markersMap[msgSessionId] = {
+         var timeoutId = setTimeout(function() { infoWindow.close() }, 10000);
+       markersMap[msgSessionId] = {
             marker: marker,
             infoWindow: infoWindow
-        }
+,             timeoutId: timeoutId
+       }
     }
 
     if (advanced){
