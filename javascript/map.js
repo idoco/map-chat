@@ -117,7 +117,7 @@ function displayMessageOnMap(msg){
                 clearTimeout(existingTimeoutId);
             }
             markersMap[msgSessionId].timeoutId =
-                setTimeout(function() { existingInfoWindow.close() }, 10000);
+                setTimeout(function() { existingInfoWindow.close() }, 15000);
            existingInfoWindow.open(map, existingMarker);
         }
     } else { // new marker
@@ -139,7 +139,7 @@ function displayMessageOnMap(msg){
             infoWindow.open(map, marker);
         }
 
-         var timeoutId = setTimeout(function() { infoWindow.close() }, 10000);
+         var timeoutId = setTimeout(function() { infoWindow.close() }, 15000);
        markersMap[msgSessionId] = {
             marker: marker,
             infoWindow: infoWindow
