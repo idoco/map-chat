@@ -1,4 +1,3 @@
-
 var eb;
 var retryCount = 5;
 
@@ -72,6 +71,10 @@ $( document ).ready(function() {
 
     $("#send-button").click(function(){
         sendMessage(topic, input);
+    });
+
+    $("#clear-button").click(function(){
+        clearMessageFromMap();
     });
 
     var $notifyOnBar = $("#notify_on_bar");

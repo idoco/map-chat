@@ -1,4 +1,3 @@
-
 var mySessionId;
 var map;
 var userLocation;
@@ -141,6 +140,14 @@ function displayMessageOnMap(msg){
 
     if (advanced){
         runAdvancedOptions(msg);
+    }
+}
+
+function clearMessageFromMap(){
+    for (var markerSessionId in markersMap) {
+        if (markersMap.hasOwnProperty(markerSessionId)) {
+            markersMap[markerSessionId].infoWindow.close();
+        }
     }
 }
 
