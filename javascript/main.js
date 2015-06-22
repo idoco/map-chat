@@ -74,6 +74,10 @@ $( document ).ready(function() {
         sendMessage(topic, input);
     });
 
+    $("#clear-button").click(function(){
+        clearMessageFromMap();
+    });
+
     var $notifyOnBar = $("#notify_on_bar");
     var $notifyOnSide = $("#notify_on_side");
 

@@ -144,6 +144,14 @@ function displayMessageOnMap(msg){
     }
 }
 
+function clearMessageFromMap(){
+    for (var markerSessionId in markersMap) {
+        if (markersMap.hasOwnProperty(markerSessionId)) {
+            markersMap[markerSessionId].infoWindow.close();
+        }
+    }
+}
+
 function runAdvancedOptions(msg){
     if (msg.sessionId == mySessionId){
         return;
