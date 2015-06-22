@@ -6,6 +6,17 @@ var markersMap = {};
 var markerImage;
 var advanced = false;
 
+var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;',
+    "卐": 'I am a dick ',
+    "卍": 'I am a dick '
+};
+
 function initialize() {
 
     var defaultLatLng = new google.maps.LatLng(32.078043, 34.774177); // Add the coordinates
@@ -17,7 +28,7 @@ function initialize() {
 
     var mapOptions = {
         center: defaultLatLng,
-        zoom: 9, // The initial zoom level when your map loads (0-20)
+        zoom: 3, // The initial zoom level when your map loads (0-20)
         minZoom: 3, // Minimum zoom level allowed (0-20)
         maxZoom: 18, // Maximum soom level allowed (0-20)
         zoomControl:false, // Set to true if using zoomControlOptions below, or false to remove all zoom controls.
@@ -83,7 +94,16 @@ function createMessage(text){
 function displayMessageOnMap(msg){
     var newPosition = new google.maps.LatLng(msg.lat,msg.lng);
     var msgSessionId = msg.sessionId;
-    msg.text = msg.text.replace('>',''); // xss prevention hack
+
+    // xss prevention hack
+    msg.text = html_sanitize(msg.text);
+
+    msg.text = String(msg.text).replace(/[&<>"'\/卐卍]/g, function (s) {
+        return entityMap[s];
+    });
+
+    // lets hope this won't be used in a bad way :)
+    // msg.text = msg.text.replace(/#(\S*)/g,'<a href="#$1" target="_blank">$1</a>');
 
     if(markersMap[msgSessionId]){ // update existing marker
         var existingMarker = markersMap[msgSessionId].marker;
@@ -143,12 +163,12 @@ function runAdvancedOptions(msg){
 if (window.navigator.userAgent.indexOf("FBAV") > 0) {
     document.write(
             "<div class=\"center\" style=\"position: fixed; top: 120px; width: 100%;\">" +
-            "<div class=\"\">" +
-            "<h6>" +
-            "This page will not work inside the facebook app, " +
-            "please open it in the native browser." +
-            "</h6>" +
-            "</div>" +
+                "<div class=\"\">" +
+                    "<h6>" +
+                        "This page will not work inside the facebook app, " +
+                        "please open it in the native browser." +
+                    "</h6>" +
+                "</div>" +
             "</div>"
     );
 }  else {

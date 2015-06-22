@@ -1,4 +1,4 @@
-package opt;
+package MapChat;
 
 import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.Handler;
@@ -12,9 +12,18 @@ import org.vertx.java.core.sockjs.SockJSServer;
 import org.vertx.java.core.sockjs.SockJSSocket;
 import org.vertx.java.platform.Verticle;
 
+import java.lang.String;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class ChatVerticle extends Verticle {
+
+    //todo: this should be shared between verticles
+    public static final List<String> blackList = new ArrayList<String>();
+
     Logger logger;
 
     public void start() {
@@ -44,10 +53,16 @@ public class ChatVerticle extends Verticle {
         public boolean handleSocketCreated(SockJSSocket sock) {
             // Reject the socket if not from our domain
             String origin = sock.headers().get("origin");
-            return origin != null && (origin.startsWith("http://idoco.github.io"));
+            return origin != null && (origin.startsWith("http://localhost"));
         }
 
         public boolean handlePreRegister(SockJSSocket sock, String address) {
+            InetAddress remoteAddress = sock.remoteAddress().getAddress();
+            if(blackList.contains(remoteAddress.toString())){
+                logger.error("BlackListed connection rejected from remote address ["+remoteAddress+"] ");
+                return false;
+            }
+
             JsonObject registrationWrapper = new JsonObject();
             registrationWrapper.putString("address",address);
             registrationWrapper.putString("type","publish");
@@ -73,9 +88,11 @@ public class ChatVerticle extends Verticle {
 
             long currentTimeMillis = System.currentTimeMillis();
             Long lastMessageTime = sessionIdToLastMessageTime.get(sessionId);
-            if (lastMessageTime != null && currentTimeMillis - lastMessageTime < 1000){
+            if (lastMessageTime != null && currentTimeMillis - lastMessageTime < 500){
                 logger.error("Invalid Message rejected from remote address ["+sock.remoteAddress()+"] " +
                         "(Rate too high)");
+                blackList.add(sock.remoteAddress().getAddress().toString());
+                sock.close();
                 return false;
             }
 

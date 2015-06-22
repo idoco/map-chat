@@ -7,7 +7,7 @@ var urlHashTopic = location.hash ? location.hash.substring(1).toLowerCase() : nu
 var topic = urlHashTopic ? urlHashTopic : "main";
 
 function initialiseEventBus(){
-    eb = new vertx.EventBus("http://chatmap.cloudapp.net/chat");
+    eb = new vertx.EventBus("http://localhost:8080/chat");
 
     eb.onopen = function () {
         subscribe(topic);
@@ -74,5 +74,23 @@ $( document ).ready(function() {
         sendMessage(topic, input);
     });
 
+    var $notifyOnBar = $("#notify_on_bar");
+    var $notifyOnSide = $("#notify_on_side");
+
+    function bindNotificationState(a,b){
+        a.change(function() {
+            b.prop("checked", this.checked);
+            advanced = !advanced;
+            Materialize.toast(advanced ? 'Notifications On' : 'Notifications Off', 3000);
+        });
+    }
+
+    bindNotificationState($notifyOnBar,$notifyOnSide);
+    bindNotificationState($notifyOnSide,$notifyOnBar);
+
     input.focus();
+
+    if (topic != "main"){
+        Materialize.toast("Private chat map - "+topic, 5000);
+    }
 });

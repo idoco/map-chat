@@ -1,6 +1,17 @@
-
 .navbar-fixed {
     height: 0;
+}
+
+.switch label {
+    color: white;
+}
+
+.switch label input[type=checkbox]:checked+.lever{
+    background-color: #B6B6B6;
+}
+
+.switch label input[type=checkbox]:checked+.lever:after{
+    background-color: #FF9800;
 }
 
 html, body, #map-canvas {

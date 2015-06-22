@@ -29,10 +29,28 @@
             <a class="brand-logo">MapChat</a>
             <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
             <ul class="right hide-on-med-and-down">
+                <li>
+                    <div class="switch blue">
+                        <label class="">
+                            Notifications
+                            <input id="notify_on_bar" type="checkbox">
+                            <span class="lever"></span>
+                        </label>
+                    </div>
+                </li>
                 <li><a href="https://github.com/idoco/map-chat">Fork on GitHub</a></li>
             </ul>
             <ul class="side-nav" id="mobile-demo">
                 <li><a href="https://github.com/idoco/map-chat">Fork on GitHub</a></li>
+                <li>
+                    <div class="switch">
+                        <label style="color: black">
+                            Notifications
+                            <input id="notify_on_side" type="checkbox">
+                            <span class="lever"></span>
+                        </label>
+                    </div>
+                </li>
             </ul>
         </div>
     </nav>
@@ -55,11 +73,12 @@
 <!--Import jQuery before materialize.js-->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
-<script src="http://cdn.jsdelivr.net/sockjs/1.0.0/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/sockjs/1.0.0/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vertx/2.0.0/vertxbus.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&language=en&key=AIzaSyCU8-Peh41jRM2kZEnvkaQzRacYCtMMrLc"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&language=en"></script>
 
 <script type="text/javascript" src="javascript/modernizr.custom.js"></script>
+<script type="text/javascript" src="javascript/html-sanitizer-minified.js"></script>
 <script src="javascript/main.js"></script>
 <script src="javascript/map.js"></script>
 
@@ -72,7 +91,6 @@
 
     ga('create', 'UA-63921484-1', 'auto');
     ga('send', 'pageview');
-
 </script>
 
 </body>
