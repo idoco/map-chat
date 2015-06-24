@@ -26,27 +26,15 @@
 <div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper blue">
-            <a class="brand-logo">MapChat</a>
-            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
-            <ul class="right hide-on-med-and-down">
-                <li>
-                    <div class="switch blue">
-                        <label class="">
-                            Notifications
-                            <input id="notify_on_bar" type="checkbox">
-                            <span class="lever"></span>
-                        </label>
-                    </div>
-                </li>
-                <li><a href="https://github.com/idoco/map-chat">Fork on GitHub</a></li>
-            </ul>
-            <ul class="side-nav" id="mobile-demo">
+            <a class="brand-logo center">MapChat</a>
+            <a id="side-nav-button" href="#" data-activates="side-nav"><i class="mdi-navigation-menu"></i></a>
+            <ul class="side-nav" id="side-nav">
                 <li><a href="https://github.com/idoco/map-chat">Fork on GitHub</a></li>
                 <li>
                     <div class="switch">
                         <label style="color: black">
                             Notifications
-                            <input id="notify_on_side" type="checkbox">
+                            <input id="notification_lever" type="checkbox">
                             <span class="lever"></span>
                         </label>
                     </div>
@@ -55,6 +43,12 @@
         </div>
     </nav>
 </div>
+
+<a href="https://github.com/idoco/map-chat/" class="hide-on-med-and-down">
+        <img style="position: absolute; right: 0; border: 0; z-index: 1000;"
+              src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"
+              alt="Fork me on GitHub">
+</a>
 
 <div id="map-canvas"></div>
 
