@@ -10,6 +10,7 @@ function initialiseEventBus(){
 
     eb.onopen = function () {
         subscribe(topic);
+        retryCount = 5;
     };
 
     eb.onclose = function(){
