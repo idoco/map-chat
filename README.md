@@ -8,6 +8,16 @@ A super simple location based chat
 - No registration or message history.
 - Create a private chat map by adding <i>#name</i> to the url.
 
+## Embed MapChat In Your Website!
+ - Simply add this `iframe` to your website:
+```html
+<iframe id="mapchat" type="text/html" width="640" height="480"
+  src="http://idoco.github.io/map-chat/#myTopic"
+  frameborder="0"></iframe>
+```
+- The minimum recommended size it 640x480
+- It is recommended to embed private map chats by using a unique #topic
+
 ## How to deploy your own instance
 - [Have Vert.x (2.1.5) on your path](http://vertx.io/vertx2/install.html).
 - Run the server with "vertx run ChatVerticle.java".
