@@ -102,8 +102,8 @@ function displayMessageOnMap(msg){
     if(markersMap[msgSessionId]){ // update existing marker
         var existingMarker = markersMap[msgSessionId].marker;
         var existingInfoWindow = markersMap[msgSessionId].infoWindow;
-
         var existingTimeoutId = markersMap[msgSessionId].timeoutId;
+
         existingMarker.setPosition(newPosition);
         existingInfoWindow.setContent(msg.text);
         if (msg.text) {
