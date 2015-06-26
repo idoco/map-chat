@@ -2,10 +2,12 @@
 var mySessionId;
 var map;
 var userLocation;
+var fuzzyUserLocation;
 var markersMap = {};
 var markerImage;
 var watchPosition;
 var advanced = false;
+var shareAccurateLocation = false;
 
 var locationOptions = {
     enableHighAccuracy: true,
@@ -63,16 +65,16 @@ function setupWatchPosition() {
 }
 
 function onFirstPosition(position){
-    userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    setUserLocation(position.coords.latitude, position.coords.longitude);
     initialiseEventBus();
     map.panTo(userLocation);
 }
 
 function onPositionUpdate(position) {
     if (markersMap[mySessionId]) { //update user marker position
-        userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        setUserLocation(position.coords.latitude, position.coords.longitude);
         var userMarker = markersMap[mySessionId].marker;
-        userMarker.setPosition(userLocation);
+        userMarker.setPosition(shareAccurateLocation ? userLocation : fuzzyUserLocation);
     }
 }
 
@@ -81,10 +83,15 @@ function onPositionError(err) {
     console.error('Error(' + err.code + '): ' + err.message);
 }
 
+function setUserLocation(lat, lng){
+    userLocation = new google.maps.LatLng(lat, lng);
+    fuzzyUserLocation = new google.maps.LatLng(Math.round(lat * 100) / 100, Math.round(lng * 100) / 100);
+}
+
 function createMessage(text){
     return {
-        lat:userLocation.lat(),
-        lng: userLocation.lng(),
+        lat: shareAccurateLocation ? userLocation.lat() : fuzzyUserLocation.lat(),
+        lng: shareAccurateLocation ? userLocation.lng() : fuzzyUserLocation.lng(),
         text: text
     };
 }
