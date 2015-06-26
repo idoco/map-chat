@@ -45,7 +45,7 @@ function subscribe(address) {
             if (msg.newSessionId) {
                 mySessionId = msg.newSessionId;
                 publish(topic,""); // Sending a first empty message
-                    setupWatchPosition();
+                setupWatchPosition();
             } else {
                 displayMessageOnMap(msg);
             }
