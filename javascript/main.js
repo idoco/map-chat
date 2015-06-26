@@ -79,6 +79,11 @@ $( document ).ready(function() {
         Materialize.toast(advanced ? 'Notifications On' : 'Notifications Off', 3000);
     });
 
+    $("#accurate_location_lever").change(function() {
+        shareAccurateLocation = !shareAccurateLocation;
+        Materialize.toast(shareAccurateLocation ? 'Sharing Your Accurate Location' : 'Sharing Your Fuzzy Location', 3000);
+    });
+
     input.focus();
 
     if (topic != "main"){
