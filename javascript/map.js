@@ -132,7 +132,7 @@ function displayMessageOnMap(msg){
         var marker = new google.maps.Marker({
             position: newPosition,
             map: map,
-            draggable:true,
+            draggable: false,
             icon: markerImage,
             title: "User "+msgSessionId
         });
