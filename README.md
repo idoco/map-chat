@@ -8,7 +8,7 @@ A super simple location based chat
 - No registration or message history.
 - Create a private chat map by adding <i>#name</i> to the url.
 
-## Embed MapChat In Your Website!
+## Embed MapChat in your website
  - Simply add this `iframe` to your website:
 ```html
 <iframe id="mapchat" type="text/html" width="640" height="480"
@@ -24,7 +24,7 @@ A super simple location based chat
 - Open index.html.
 - Chat.
 
-## Contributing To MapChat
+## Contributing to MapChat
 - Use GitHub Issues to report bugs and suggest new features. 
 - Please search the existing issues for your bug and create a new one only if the issue is not yet tracked!
 - Feel free to fork this project and suggest new features as pull requests.
