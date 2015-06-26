@@ -9,7 +9,7 @@ A super simple location based chat
 - Create a private chat map by adding <i>#name</i> to the url.
 
 ## How to deploy your own instance
-- [Have Vert.x (2.1.5) on your path](http://vertx.io/install.html).
+- [Have Vert.x (2.1.5) on your path](http://vertx.io/vertx2/install.html).
 - Run the server with "vertx run ChatVerticle.java".
 - Open index.html.
 - Chat.
