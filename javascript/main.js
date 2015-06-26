@@ -43,7 +43,7 @@ function subscribe(address) {
         eb.registerHandler(address, function (msg) {
             if (msg.newSessionId) {
                 mySessionId = msg.newSessionId;
-                publish(topic,"");
+                publish(topic,""); // Sending a first empty message
                 setupWatchPosition();
             } else {
                 displayMessageOnMap(msg);
