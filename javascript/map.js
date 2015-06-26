@@ -1,10 +1,16 @@
-
 var mySessionId;
 var map;
 var userLocation;
 var markersMap = {};
 var markerImage;
+var watchPosition;
 var advanced = false;
+
+var locationOptions = {
+    enableHighAccuracy: true,
+    timeout: 10000,
+    maximumAge: 10000
+};
 
 var entityMap = {
     "&": "&amp;",
@@ -46,41 +52,32 @@ function initialize() {
     var mapDiv = document.getElementById('map-canvas');
     map = new google.maps.Map(mapDiv, mapOptions);
 
-    setupWatchPosition();
+    navigator.geolocation.getCurrentPosition(onFirstPosition, onPositionError, locationOptions);
 }
 
 function setupWatchPosition() {
-    function onNewPosition(position) {
-        var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
-        if (!userLocation) { // first time we get location
-            userLocation = latLng;
-            if (mySessionId){
-                // Sending a first message (empty)
-                publish(topic,"");
-            }
-            map.panTo(userLocation);
-        } else if (mySessionId && markersMap[mySessionId]) { //update user marker position
-            userLocation = latLng;
-            var userMarker = markersMap[mySessionId].marker;
-            userMarker.setPosition(userLocation);
-        }
+    if (!watchPosition) {
+        watchPosition = navigator.geolocation.watchPosition(onPositionUpdate, onPositionError, locationOptions);
     }
+}
 
-    function onPositionError(err) {
-        console.error('Error(' + err.code + '): ' + err.message);
-    }
+function onFirstPosition(position){
+    userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    initialiseEventBus();
+    map.panTo(userLocation);
+}
 
-    if (navigator.geolocation) {
-        var watchOptions = {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge: 5000
-        };
-        navigator.geolocation.watchPosition(onNewPosition, onPositionError, watchOptions);
-    } else {
-        Materialize.toast('Browser not supported :(', 7000);
+function onPositionUpdate(position) {
+    if (markersMap[mySessionId]) { //update user marker position
+        userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        var userMarker = markersMap[mySessionId].marker;
+        userMarker.setPosition(userLocation);
     }
+}
+
+function onPositionError(err) {
+    Materialize.toast('User location not available :(', 7000);
+    console.error('Error(' + err.code + '): ' + err.message);
 }
 
 function createMessage(text){
@@ -101,9 +98,6 @@ function displayMessageOnMap(msg){
     msg.text = String(msg.text).replace(/[&<>"'\/卐卍]/g, function (s) {
         return entityMap[s];
     });
-
-    // lets hope this won't be used in a bad way :)
-    // msg.text = msg.text.replace(/#(\S*)/g,'<a href="#$1" target="_blank">$1</a>');
 
     if(markersMap[msgSessionId]){ // update existing marker
         var existingMarker = markersMap[msgSessionId].marker;

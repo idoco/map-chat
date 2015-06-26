@@ -43,18 +43,14 @@ function subscribe(address) {
         eb.registerHandler(address, function (msg) {
             if (msg.newSessionId) {
                 mySessionId = msg.newSessionId;
-                if(userLocation){
-                    // Sending a first message (empty)
-                    publish(topic,"");
-                }
+                publish(topic,"");
+                setupWatchPosition();
             } else {
                 displayMessageOnMap(msg);
             }
         });
     }
 }
-
-initialiseEventBus();
 
 $( document ).ready(function() {
     if(!Modernizr.websockets || !Modernizr.geolocation){
