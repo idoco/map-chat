@@ -17,7 +17,7 @@ A super simple location based chat
 ```
 - The minimum recommended size it 640x480.
 - It is recommended to embed private map chats by using a unique #topic.
-- [See example.](http://map-chat-test.blogspot.co.il/)
+- [See example.](http://idoco.svbtle.com/embed-mapchat-in-your-website)
 
 ## How to deploy your own instance
 - [Have Vert.x (2.1.5) on your path](http://vertx.io/vertx2/install.html).
