@@ -8,6 +8,10 @@ var watchPosition;
 var advanced = false;
 var shareAccurateLocation = false;
 
+var isLowResolution = window.screen.width < 768;
+var defaultZoom = isLowResolution ? 2 : 3;
+var minZoom = isLowResolution ? 1 : 3;
+
 var locationOptions = {
     enableHighAccuracy: true,
     timeout: 10000,
@@ -36,8 +40,8 @@ function initialize() {
 
     var mapOptions = {
         center: defaultLatLng,
-        zoom: 3, // The initial zoom level when your map loads (0-20)
-        minZoom: 3, // Minimum zoom level allowed (0-20)
+        zoom: defaultZoom, // The initial zoom level when your map loads (0-20)
+        minZoom: minZoom, // Minimum zoom level allowed (0-20)
         maxZoom: 18, // Maximum soom level allowed (0-20)
         zoomControl:false, // Set to true if using zoomControlOptions below, or false to remove all zoom controls.
         mapTypeId: google.maps.MapTypeId.ROADMAP, // Set the type of Map
