@@ -1,4 +1,4 @@
-package MapChat;
+package server;
 
 import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.Handler;
@@ -10,32 +10,22 @@ import org.vertx.java.core.logging.Logger;
 import org.vertx.java.core.sockjs.EventBusBridgeHook;
 import org.vertx.java.core.sockjs.SockJSServer;
 import org.vertx.java.core.sockjs.SockJSSocket;
+import org.vertx.java.platform.Container;
 import org.vertx.java.platform.Verticle;
 
-import java.lang.String;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ChatVerticle extends Verticle {
 
-    //todo: this should be shared between verticles
-    public static final List<String> blackList = new ArrayList<String>();
-
-    Logger logger;
-
     public void start() {
-        logger = container.logger();
-
         HttpServer server = vertx.createHttpServer();
 
         JsonArray permitted = new JsonArray();
         permitted.add(new JsonObject()); // Let everything through
 
         SockJSServer sockJSServer = vertx.createSockJSServer(server);
-        sockJSServer.setHook(new ServerHook(logger));
+        sockJSServer.setHook(new ServerHook(container));
         sockJSServer.bridge(new JsonObject().putString("prefix", "/chat"), permitted, permitted);
 
         server.listen(8080);
@@ -43,14 +33,22 @@ public class ChatVerticle extends Verticle {
 
     private static class ServerHook implements EventBusBridgeHook {
         private final Logger logger;
+        private final String adminKey;
+
+        //todo: this should be shared between vertices
+        private final Set<InetAddress> blackList = new HashSet<>();
+        private final Map<String,InetAddress> sessionIdToIp = new HashMap<>();
         private final HashMap<String,Long> sessionIdToLastMessageTime = new HashMap<>();
 
-        public ServerHook(Logger logger) {
-            this.logger = logger;
+        public ServerHook(Container container) {
+            this.logger = container.logger();
+            this.adminKey = container.config().getString("adminKey", "defaultPassword");
+            logger.info("adminKey is "+ adminKey);
         }
 
         @Override
         public boolean handleSocketCreated(SockJSSocket sock) {
+            if (isBlackListed(sock)) return false;
             // Reject the socket if not from our domain
             String origin = sock.headers().get("origin");
             return origin != null && (origin.startsWith("http://localhost"));
@@ -58,10 +56,8 @@ public class ChatVerticle extends Verticle {
 
         public boolean handlePreRegister(SockJSSocket sock, String address) {
             InetAddress remoteAddress = sock.remoteAddress().getAddress();
-            if(blackList.contains(remoteAddress.toString())){
-                logger.error("BlackListed connection rejected from remote address ["+remoteAddress+"] ");
-                return false;
-            }
+            String sessionId = sock.writeHandlerID();
+            sessionIdToIp.put(sessionId,remoteAddress);
 
             JsonObject registrationWrapper = new JsonObject();
             registrationWrapper.putString("address",address);
@@ -81,25 +77,54 @@ public class ChatVerticle extends Verticle {
         public boolean handleSendOrPub(SockJSSocket sock, boolean send, JsonObject msg, String address) {
             String sessionId = sock.writeHandlerID();
 
+            if (isBlackListed(sock)) {
+                return false;
+            }
+
             if (msg.toString().length() > 256) {
-                logger.error("Invalid Message rejected from remote address ["+sock.remoteAddress()+"] (msg too long) ");
+                blackList(sock, "msg too long");
                 return false;
             }
 
             long currentTimeMillis = System.currentTimeMillis();
             Long lastMessageTime = sessionIdToLastMessageTime.get(sessionId);
             if (lastMessageTime != null && currentTimeMillis - lastMessageTime < 500){
-                logger.error("Invalid Message rejected from remote address ["+sock.remoteAddress()+"] " +
-                        "(Rate too high)");
-                blackList.add(sock.remoteAddress().getAddress().toString());
-                sock.close();
+                blackList(sock, "rate too high");
                 return false;
             }
 
-            msg.getObject("body").putString("sessionId",sessionId);
+            JsonObject body = msg.getObject("body");
+            if (!body.containsField("adminKey")) {
+                body.putString("sessionId", sessionId);
+                sessionIdToLastMessageTime.put(sessionId,currentTimeMillis);
+                return true;
+            } else if (Objects.equals(body.getString("adminKey"), adminKey) &&
+                       Objects.equals(body.getString("action"), ("blacklist"))) {
+                InetAddress targetIp = sessionIdToIp.get(body.getString("sessionId"));
+                blackList.add(targetIp);
+                logger.info("Ip " + targetIp + " blacklisted");
+                return false;
+            } else {
+                blackList(sock, "bad admin adminKey");
+                return false;
+            }
+        }
 
-            sessionIdToLastMessageTime.put(sessionId,currentTimeMillis);
-            return true;
+        private boolean isBlackListed(SockJSSocket sock) {
+            InetAddress remoteAddress = sock.remoteAddress().getAddress();
+            if(blackList.contains(remoteAddress)){
+                logger.warn("BlackListed communication detected from " + remoteAddress);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        private void blackList(SockJSSocket sock, String reason) {
+            InetAddress address = sock.remoteAddress().getAddress();
+            logger.warn("Address " + address + " blacklisted - " + reason);
+            blackList.add(address);
+            sock.close();
         }
 
         public void handleSocketClosed(SockJSSocket sock) { }
@@ -107,6 +132,5 @@ public class ChatVerticle extends Verticle {
         public boolean handleUnregister(SockJSSocket sock, String address) { return true; }
         public boolean handleAuthorise(
                 JsonObject message, String sessionID, Handler<AsyncResult<Boolean>> handler) {return false;}
-
     }
 }
