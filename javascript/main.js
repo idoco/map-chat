@@ -1,5 +1,6 @@
 var eb;
 var retryCount = 5;
+var adminKey;
 
 // Support dynamic topic registration by #word
 var urlHashTopic = location.hash ? location.hash.substring(1).toLowerCase() : null;
@@ -10,7 +11,6 @@ function initialiseEventBus(){
 
     eb.onopen = function () {
         subscribe(topic);
-        retryCount = 5;
     };
 
     eb.onclose = function(){
@@ -42,6 +42,7 @@ function subscribe(address) {
     if (eb) {
         eb.registerHandler(address, function (msg) {
             if (msg.newSessionId) {
+                retryCount = 5;
                 mySessionId = msg.newSessionId;
                 publish(topic,""); // Sending a first empty message
                 setupWatchPosition();
@@ -50,6 +51,16 @@ function subscribe(address) {
             }
         });
     }
+}
+
+function BlacklistUser(sessionId) {
+    // using a wrong key will get you blacklisted
+    if (!adminKey) adminKey = prompt("Please enter your admin key");
+    eb.publish(topic, {
+        adminKey: adminKey,
+        action: "blacklist",
+        sessionId: sessionId
+    });
 }
 
 $( document ).ready(function() {
@@ -65,6 +76,7 @@ $( document ).ready(function() {
             sendMessage(topic, input);
         }
     });
+    input.focus();
 
     $("#send-button").click(function(){
         sendMessage(topic, input);
@@ -83,8 +95,6 @@ $( document ).ready(function() {
         shareAccurateLocation = !shareAccurateLocation;
         Materialize.toast(shareAccurateLocation ? 'Sharing Your Accurate Location' : 'Sharing Your Fuzzy Location', 3000);
     });
-
-    input.focus();
 
     if (topic != "main"){
         Materialize.toast("Private chat map - "+topic, 5000);
