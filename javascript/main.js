@@ -1,5 +1,5 @@
 var eb;
-var retryCount = 5;
+var retryCount = 10;
 
 // Support dynamic topic registration by #word
 var urlHashTopic = location.hash ? location.hash.substring(1).toLowerCase() : null;
@@ -15,8 +15,8 @@ function initialiseEventBus(){
     eb.onclose = function(){
         if (retryCount) {
             retryCount--;
-            console.log('Connection lost, trying to reconnect');
-            initialiseEventBus()
+            console.log('Connection lost, scheduling reconnect');
+            setTimeout(initialiseEventBus, 1000);
         } else{
             Materialize.toast('Connection lost, please refresh :( ', 10000);
         }
