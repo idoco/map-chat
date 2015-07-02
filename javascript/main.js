@@ -1,6 +1,5 @@
 var eb;
 var retryCount = 5;
-var adminKey;
 
 // Support dynamic topic registration by #word
 var urlHashTopic = location.hash ? location.hash.substring(1).toLowerCase() : null;
@@ -51,16 +50,6 @@ function subscribe(address) {
             }
         });
     }
-}
-
-function BlacklistUser(sessionId) {
-    // using a wrong key will get you blacklisted
-    if (!adminKey) adminKey = prompt("Please enter your admin key");
-    eb.publish(topic, {
-        adminKey: adminKey,
-        action: "blacklist",
-        sessionId: sessionId
-    });
 }
 
 $( document ).ready(function() {

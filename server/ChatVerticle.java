@@ -14,7 +14,10 @@ import org.vertx.java.platform.Container;
 import org.vertx.java.platform.Verticle;
 
 import java.net.InetAddress;
-import java.util.*;
+import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ChatVerticle extends Verticle {
 
@@ -33,31 +36,34 @@ public class ChatVerticle extends Verticle {
 
     private static class ServerHook implements EventBusBridgeHook {
         private final Logger logger;
-        private final String adminKey;
 
         //todo: this should be shared between vertices
         private final Set<InetAddress> blackList = new HashSet<>();
-        private final Map<String,InetAddress> sessionIdToIp = new HashMap<>();
         private final HashMap<String,Long> sessionIdToLastMessageTime = new HashMap<>();
 
         public ServerHook(Container container) {
             this.logger = container.logger();
-            this.adminKey = container.config().getString("adminKey", "defaultPassword");
-            logger.info("adminKey is "+ adminKey);
+            JsonArray storedBlacklist = container.config().getArray("blacklist",new JsonArray());
+            for (Object ip : storedBlacklist) {
+                try {
+                    blackList.add(InetAddress.getByName(ip.toString()));
+                } catch (UnknownHostException e) {
+                    logger.error("Could not parse blacklisted host/ip "+ip);
+                }
+            }
         }
 
         @Override
         public boolean handleSocketCreated(SockJSSocket sock) {
-            if (isBlackListed(sock)) return false;
-            // Reject the socket if not from our domain
             String origin = sock.headers().get("origin");
-            return origin != null && (origin.startsWith("http://idoco.github.io"));
+            return origin != null && origin.startsWith("http://idoco.github.io") &&
+                    !isBlackListed(sock);
         }
 
         public boolean handlePreRegister(SockJSSocket sock, String address) {
             InetAddress remoteAddress = sock.remoteAddress().getAddress();
             String sessionId = sock.writeHandlerID();
-            sessionIdToIp.put(sessionId,remoteAddress);
+            logger.info("IP " + remoteAddress + " registered as " + sessionId + " to " + address);
 
             JsonObject registrationWrapper = new JsonObject();
             registrationWrapper.putString("address",address);
@@ -77,10 +83,6 @@ public class ChatVerticle extends Verticle {
         public boolean handleSendOrPub(SockJSSocket sock, boolean send, JsonObject msg, String address) {
             String sessionId = sock.writeHandlerID();
 
-            if (isBlackListed(sock)) {
-                return false;
-            }
-
             if (msg.toString().length() > 256) {
                 blackList(sock, "msg too long");
                 return false;
@@ -94,20 +96,9 @@ public class ChatVerticle extends Verticle {
             }
 
             JsonObject body = msg.getObject("body");
-            if (!body.containsField("adminKey")) {
-                body.putString("sessionId", sessionId);
-                sessionIdToLastMessageTime.put(sessionId,currentTimeMillis);
-                return true;
-            } else if (Objects.equals(body.getString("adminKey"), adminKey) &&
-                       Objects.equals(body.getString("action"), ("blacklist"))) {
-                InetAddress targetIp = sessionIdToIp.get(body.getString("sessionId"));
-                blackList.add(targetIp);
-                logger.info("Ip " + targetIp + " blacklisted");
-                return false;
-            } else {
-                blackList(sock, "bad admin adminKey");
-                return false;
-            }
+            body.putString("sessionId", sessionId);
+            sessionIdToLastMessageTime.put(sessionId,currentTimeMillis);
+            return true;
         }
 
         private boolean isBlackListed(SockJSSocket sock) {
