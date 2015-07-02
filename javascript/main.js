@@ -16,7 +16,7 @@ function initialiseEventBus(){
         if (retryCount) {
             retryCount--;
             console.log('Connection lost, scheduling reconnect');
-            setTimeout(initialiseEventBus, 200);
+            setTimeout(initialiseEventBus, 100);
         } else{
             Materialize.toast('Connection lost, please refresh :( ', 10000);
         }
