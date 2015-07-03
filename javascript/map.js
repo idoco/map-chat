@@ -161,7 +161,7 @@ function displayMessageOnMap(msg){
 }
 
 function embedTweet(text) {
-    var tweetText = "Someone wrote " + text + " On ";
+    var tweetText = "Someone wrote " + text + " on ";
     var tweetUrl = "https:\/\/twitter.com\/share?text=" + tweetText;
     var width = 500, height = 300;
     var left = (screen.width / 2) - (width / 2);
