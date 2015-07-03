@@ -72,10 +72,6 @@ $( document ).ready(function() {
         sendMessage(topic, input);
     });
 
-    $("#clear-button").click(function(){
-        clearMessageFromMap();
-    });
-
     $("#notification_lever").change(function() {
         advanced = !advanced;
         Materialize.toast(advanced ? 'Notifications On' : 'Notifications Off', 3000);

@@ -43,6 +43,21 @@ html, body, #map-canvas {
     box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19) !important;
 }
 
+.fixed-action-btn {
+    z-index: 995;
+}
+
+.zoom-buttons {
+    top: 90px;
+    left: 30px;
+    width: 30px !important;
+    height: 90px !important;
+}
+
+.btn {
+    padding: 0 5px;
+}
+
 .btn-send {
     bottom: 40px;
     right: 20px;

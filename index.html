@@ -26,7 +26,7 @@
 <div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper blue">
-            <a class="brand-logo center">MapChat</a>
+            <a class="brand-logo center" href="http://idoco.github.io/map-chat/">MapChat</a>
             <a id="side-nav-button" href="#" data-activates="side-nav"><i class="mdi-navigation-menu"></i></a>
             <ul class="side-nav" id="side-nav">
                 <li>
@@ -58,6 +58,21 @@
          alt="Fork me on GitHub">
 </a>
 
+<div class="fixed-action-btn zoom-buttons">
+    <div>
+        <a id="zoom-in-button" class="waves-effect waves-light btn grey"
+                onclick="changeZoom(+1)">
+            <i class="mdi-content-add"></i>
+        </a>
+    </div>
+    <div>
+        <a id="zoom-out-button" class="waves-effect waves-light btn grey"
+                onclick="changeZoom(-1)">
+            <i class="mdi-content-remove"></i>
+        </a>
+    </div>
+</div>
+
 <div id="map-canvas"></div>
 
 <div class="center input-wrapper">
@@ -74,7 +89,8 @@
 
 
 <div class="fixed-action-btn btn-clear">
-    <a id="clear-button" class="btn-floating btn-large waves-effect waves-light red">
+    <a id="clear-button" class="btn-floating btn-large waves-effect waves-light red"
+            onclick="clearMessageFromMap()">
         <i class="large mdi-content-clear"></i>
     </a>
 </div>
