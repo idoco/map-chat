@@ -111,6 +111,8 @@ function displayMessageOnMap(msg){
         return entityMap[s];
     });
 
+    msg.text = msg.text ? embedTweet(msg.text) : "";
+
     if(markersMap[msgSessionId]){ // update existing marker
         var existingMarker = markersMap[msgSessionId].marker;
         var existingInfoWindow = markersMap[msgSessionId].infoWindow;
@@ -156,6 +158,19 @@ function displayMessageOnMap(msg){
     if (advanced){
         runAdvancedOptions(msg);
     }
+}
+
+function embedTweet(text) {
+    var tweetText = "Someone wrote " + text + " On ";
+    var tweetUrl = "https:\/\/twitter.com\/share?text=" + tweetText;
+    var width = 500, height = 300;
+    var left = (screen.width / 2) - (width / 2);
+    var top = (screen.height / 2) - (height / 2);
+    return " <a href=\"" + tweetUrl + "\"" +
+        " onclick=\"window.open('" + tweetUrl + "', 'newwindow'," +
+        " 'width=" + width + ", height=" + height + ", top=" + top + ", left=" + left + "');" +
+        " return false;\"> <image src='images/twitter-icon-small.png'> <\/a>" +
+        text;
 }
 
 function clearMessageFromMap(){
