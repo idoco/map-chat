@@ -168,9 +168,8 @@ function embedTweet(text) {
     var top = (screen.height / 2) - (height / 2);
     return " <a href=\"" + tweetUrl + "\"" +
         " onclick=\"window.open('" + tweetUrl + "', 'newwindow'," +
-        " 'width=" + width + ", height=" + height + ", top=" + top + ", left=" + left + "');" +
-        " return false;\"> <image src='images/twitter-icon-small.png'> <\/a>" +
-        text;
+        " 'width=" + width + ", height=" + height + ", top=" + top + ", left=" + left + "'); return false;\">" +
+        " <image src='images/twitter-icon-small.png'> <\/a>" + text;
 }
 
 function clearMessageFromMap(){
