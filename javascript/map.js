@@ -1,3 +1,4 @@
+
 var mySessionId;
 var map;
 var userLocation;
@@ -120,12 +121,12 @@ function displayMessageOnMap(msg){
         existingMarker.setPosition(newPosition);
         existingInfoWindow.setContent(msg.text);
         if (msg.text) {
-             if (existingTimeoutId){
+            if (existingTimeoutId){
                 clearTimeout(existingTimeoutId);
             }
             markersMap[msgSessionId].timeoutId =
                 setTimeout(function() { existingInfoWindow.close() }, 15000);
-           existingInfoWindow.open(map, existingMarker);
+            existingInfoWindow.open(map, existingMarker);
         }
     } else { // new marker
         var infoWindow = new google.maps.InfoWindow({
@@ -161,14 +162,14 @@ function displayMessageOnMap(msg){
 
 function embedTweet(text) {
     var tweetText = "Someone wrote " + text + " on ";
-    var tweetUrl = "https:\/\/twitter.com\/share?text=" + tweetText;
+    var tweetUrl = "https:\/\/twitter.com\/share?url=http://idoco.github.io/map-chat&text=" + tweetText;
     var width = 500, height = 300;
     var left = (screen.width / 2) - (width / 2);
     var top = (screen.height / 2) - (height / 2);
     return " <a href=\"" + tweetUrl + "\"" +
         " onclick=\"window.open('" + tweetUrl + "', 'newwindow'," +
-        " 'width=" + width + ", height=" + height + ", top=" + top + ", left=" + left + "'); return false;\"> " +
-        "<image src='images/twitter_icon_small.png'> <\/a> " + text;
+        " 'width=" + width + ", height=" + height + ", top=" + top + ", left=" + left + "'); return false;\">" +
+        " <image src='images/twitter_icon_small.png'> <\/a> " + text;
 }
 
 function clearMessageFromMap(){
@@ -177,6 +178,10 @@ function clearMessageFromMap(){
             markersMap[markerSessionId].infoWindow.close();
         }
     }
+}
+
+function changeZoom(factor){
+    map.setZoom(map.getZoom() + factor);
 }
 
 function runAdvancedOptions(msg){
