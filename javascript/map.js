@@ -111,7 +111,7 @@ function displayMessageOnMap(msg){
         return entityMap[s];
     });
 
-    msg.text = msg.text ? embedTweet(msg.text) : "";
+    var text = msg.text ? embedTweet(msg.text) : "";
 
     if(markersMap[msgSessionId]){ // update existing marker
         var existingMarker = markersMap[msgSessionId].marker;
@@ -119,8 +119,8 @@ function displayMessageOnMap(msg){
         var existingTimeoutId = markersMap[msgSessionId].timeoutId;
 
         existingMarker.setPosition(newPosition);
-        existingInfoWindow.setContent(msg.text);
-        if (msg.text) {
+        existingInfoWindow.setContent(text);
+        if (text) {
             if (existingTimeoutId){
                 clearTimeout(existingTimeoutId);
             }
@@ -130,7 +130,7 @@ function displayMessageOnMap(msg){
         }
     } else { // new marker
         var infoWindow = new google.maps.InfoWindow({
-            content: msg.text,
+            content: text,
             maxWidth: 400,
             disableAutoPan: true
         });
@@ -143,16 +143,16 @@ function displayMessageOnMap(msg){
             title: "User "+msgSessionId
         });
 
-        if (msg.text) {
+        if (text) {
             infoWindow.open(map, marker);
         }
 
-         var timeoutId = setTimeout(function() { infoWindow.close() }, 15000);
-       markersMap[msgSessionId] = {
+        var timeoutId = setTimeout(function() { infoWindow.close() }, 15000);
+        markersMap[msgSessionId] = {
             marker: marker,
-            infoWindow: infoWindow
-,             timeoutId: timeoutId
-       }
+            infoWindow: infoWindow,
+            timeoutId: timeoutId
+        }
     }
 
     if (advanced){
