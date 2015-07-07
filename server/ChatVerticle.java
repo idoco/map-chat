@@ -90,7 +90,7 @@ public class ChatVerticle extends Verticle {
 
             long currentTimeMillis = System.currentTimeMillis();
             Long lastMessageTime = sessionIdToLastMessageTime.get(sessionId);
-            if (lastMessageTime != null && currentTimeMillis - lastMessageTime < 500){
+            if (lastMessageTime != null && currentTimeMillis - lastMessageTime < 400){
                 blackList(sock, "rate too high");
                 return false;
             }
