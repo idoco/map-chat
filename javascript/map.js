@@ -111,7 +111,7 @@ function displayMessageOnMap(msg){
         return entityMap[s];
     });
 
-    var text = msg.text; // ? embedTweet(msg.text) : "";
+    var text = msg.text ? embedTweet(msg.text) : "";
 
     if(markersMap[msgSessionId]){ // update existing marker
         var existingMarker = markersMap[msgSessionId].marker;
@@ -160,6 +160,7 @@ function displayMessageOnMap(msg){
     }
 }
 
+//noinspection JSUnusedGlobalSymbols
 function embedTweet(text) {
     var tweetText = "Someone wrote " + text + " on ";
     var tweetUrl = "https:\/\/twitter.com\/share?url=http://idoco.github.io/map-chat&text=" + tweetText;
@@ -169,7 +170,7 @@ function embedTweet(text) {
     return " <a href=\"" + tweetUrl + "\"" +
         " onclick=\"window.open('" + tweetUrl + "', 'newwindow'," +
         " 'width=" + width + ", height=" + height + ", top=" + top + ", left=" + left + "'); return false;\">" +
-        " <image src='images/twitter_icon_small.png'> <\/a> " + text;
+        " <img src='../images/twitter_icon_small.png'> <\/a> " + text;
 }
 
 function clearMessageFromMap(){
