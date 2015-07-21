@@ -111,7 +111,7 @@ function displayMessageOnMap(msg){
         return entityMap[s];
     });
 
-    var text = msg.text ? embedTweet(msg.text) : "";
+    var text = msg.text; // ? embedTweet(msg.text) : "";
 
     if(markersMap[msgSessionId]){ // update existing marker
         var existingMarker = markersMap[msgSessionId].marker;
