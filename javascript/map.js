@@ -170,7 +170,7 @@ function embedTweet(text) {
     return " <a href=\"" + tweetUrl + "\"" +
         " onclick=\"window.open('" + tweetUrl + "', 'newwindow'," +
         " 'width=" + width + ", height=" + height + ", top=" + top + ", left=" + left + "'); return false;\">" +
-        " <img src='../images/twitter_icon_small.png'> <\/a> " + text;
+        " <img src='/images/twitter_icon_small.png'> <\/a> " + text;
 }
 
 function clearMessageFromMap(){
