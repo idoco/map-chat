@@ -20,7 +20,6 @@ var locationOptions = {
 };
 
 var entityMap = {
-    "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
     '"': '&quot;',
@@ -107,7 +106,7 @@ function displayMessageOnMap(msg){
     // xss prevention hack
     msg.text = html_sanitize(msg.text);
 
-    msg.text = String(msg.text).replace(/[&<>"'\/卐卍]/g, function (s) {
+    msg.text = String(msg.text).replace(/[<>"'\/卐卍]/g, function (s) {
         return entityMap[s];
     });
 
