@@ -7,6 +7,7 @@ var markersMap = {};
 var markerImage;
 var watchPosition;
 var advanced = false;
+var infoWindowZIndex = 100;
 var shareAccurateLocation = false;
 
 var isLowResolution = window.screen.width < 768;
@@ -121,6 +122,9 @@ function displayMessageOnMap(msg){
 
         existingMarker.setPosition(newPosition);
         existingInfoWindow.setContent(text);
+        existingInfoWindow.setZIndex(infoWindowZIndex);
+        infoWindowZIndex++;
+
         if (text) {
             if (existingTimeoutId){
                 clearTimeout(existingTimeoutId);
@@ -133,8 +137,10 @@ function displayMessageOnMap(msg){
         var infoWindow = new google.maps.InfoWindow({
             content: text,
             maxWidth: 400,
-            disableAutoPan: true
+            disableAutoPan: true,
+            zIndex: infoWindowZIndex
         });
+        infoWindowZIndex++;
 
         var marker = new google.maps.Marker({
             position: newPosition,
@@ -161,7 +167,6 @@ function displayMessageOnMap(msg){
     }
 }
 
-//noinspection JSUnusedGlobalSymbols
 function embedTweet(text) {
     var tweetText = "Someone wrote " + text + " on ";
     var tweetUrl = "https:\/\/twitter.com\/share?url=http://idoco.github.io/map-chat&text=" + tweetText;
