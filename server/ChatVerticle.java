@@ -97,9 +97,10 @@ public class ChatVerticle extends Verticle {
 
             JsonObject body = msg.getObject("body");
 
-            InetAddress remoteAddress = sock.remoteAddress().getAddress();
-            String msgText = body.getString("text", "none");
-            logger.info("msg from Ip "+remoteAddress+" ["+msgText+"]");
+            // Log user messages for debug
+            // InetAddress remoteAddress = sock.remoteAddress().getAddress();
+            // String msgText = body.getString("text", "none");
+            // logger.info("msg from Ip "+remoteAddress+" ["+msgText+"]");
 
             body.putString("sessionId", sessionId);
             sessionIdToLastMessageTime.put(sessionId,currentTimeMillis);
