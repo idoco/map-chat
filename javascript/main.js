@@ -86,5 +86,5 @@ $( document ).ready(function() {
         Materialize.toast("Private chat map - "+topic, 5000);
     }
 
-    Materialize.toast("New: Click a user dot to mute it! - "+topic, 7000);
+    Materialize.toast("New: Click a user dot to mute it!", 7000);
 });
