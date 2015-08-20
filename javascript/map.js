@@ -40,6 +40,12 @@ function initialize() {
         scaledSize: new google.maps.Size(30, 30)
     };
 
+    disabledMarkerImage = {
+        url: 'images/grey_marker.png',
+        scaledSize: new google.maps.Size(30, 30)
+    };
+
+
     var mapOptions = {
         center: defaultLatLng,
         zoom: defaultZoom, // The initial zoom level when your map loads (0-20)
@@ -112,8 +118,7 @@ function displayMessageOnMap(msg){
         return entityMap[s];
     });
 
-    // twitter button commented out
-    var text = msg.text; // ? embedTweet(msg.text) : "";
+//    msg.text = msg.text ? embedTweet(msg.text) : "";
 
     if(markersMap[msgSessionId]){ // update existing marker
         var existingMarker = markersMap[msgSessionId].marker;
@@ -121,21 +126,20 @@ function displayMessageOnMap(msg){
         var existingTimeoutId = markersMap[msgSessionId].timeoutId;
 
         existingMarker.setPosition(newPosition);
-        existingInfoWindow.setContent(text);
+        existingInfoWindow.setContent(msg.text);
         existingInfoWindow.setZIndex(infoWindowZIndex);
         infoWindowZIndex++;
-
-        if (text) {
+        if (msg.text && !markersMap[msgSessionId].disabled) {
             if (existingTimeoutId){
                 clearTimeout(existingTimeoutId);
             }
             markersMap[msgSessionId].timeoutId =
-                setTimeout(function() { existingInfoWindow.close() }, 15000);
+                setTimeout(function() { existingInfoWindow.close() }, 10000);
             existingInfoWindow.open(map, existingMarker);
         }
     } else { // new marker
         var infoWindow = new google.maps.InfoWindow({
-            content: text,
+            content: msg.text,
             maxWidth: 400,
             disableAutoPan: true,
             zIndex: infoWindowZIndex
@@ -147,18 +151,30 @@ function displayMessageOnMap(msg){
             map: map,
             draggable: false,
             icon: markerImage,
-            title: "User "+msgSessionId
+            title: "Click to mute/un-mute User "+msgSessionId
         });
 
-        if (text) {
+        marker.addListener('click',function() {
+            if (markersMap[msgSessionId].disabled) {
+                markersMap[msgSessionId].disabled = false;
+                marker.setIcon(markerImage);
+            } else{
+                markersMap[msgSessionId].disabled = true;
+                marker.setIcon(disabledMarkerImage);
+                infoWindow.close();
+            }
+        });
+
+        if (msg.text) {
             infoWindow.open(map, marker);
         }
 
-        var timeoutId = setTimeout(function() { infoWindow.close() }, 15000);
+        var timeoutId = setTimeout(function() { infoWindow.close() }, 10000);
         markersMap[msgSessionId] = {
             marker: marker,
             infoWindow: infoWindow,
-            timeoutId: timeoutId
+            timeoutId: timeoutId,
+            disabled: false
         }
     }
 
