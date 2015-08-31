@@ -23,7 +23,16 @@
 
 <body>
 
-<div class="navbar-fixed">
+<!-- Google translate -->
+<div id="google_translate_element" style="position: absolute; right: 25px; padding-top: 20px; z-index: 500"></div>
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({pageLanguage: 'auto', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+</script>
+<script type="text/javascript" src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<div class="navbar">
     <nav>
         <div class="nav-wrapper blue">
             <a class="brand-logo center" href="http://idoco.github.io/map-chat/">MapChat</a>
