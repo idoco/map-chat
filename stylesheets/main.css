@@ -6,6 +6,26 @@ html {
     height: 0;
 }
 
+.translation-wrapper {
+    color: white;
+    position: absolute;
+    right: 25px;
+    padding-top: 20px;
+    z-index: 500
+}
+
+.translation-dropdown {
+    float: right;
+    padding-left: 10px
+}
+
+.fork-me-link {
+    position: absolute;
+    right: 0;
+    border: 0;
+    z-index: 1000;
+}
+
 .switch label {
     color: white;
 }
