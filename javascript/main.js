@@ -44,11 +44,8 @@ function subscribe(address) {
                 retryCount = 5;
                 mySessionId = msg.newSessionId;
                 publish(topic,""); // Sending a first empty message
-                try {
-                    setupWatchPosition();
-                } catch(e) {
-                    log.error("Failed to setup watch position")
-                }
+                //until the location issue is fixed
+                //setupWatchPosition();
             } else {
                 displayMessageOnMap(msg);
             }
