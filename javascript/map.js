@@ -90,13 +90,15 @@ function onPositionUpdate(position) {
 }
 
 function onPositionError(err) {
-
-    $.getJSON("http://ipinfo.io", function(doc){
-        var latLong = doc.loc.split(",");
-        setUserLocation(parseFloat(latLong[0]), parseFloat(latLong[1]));
-        initialiseEventBus();
-        map.panTo(userLocation);
-
+    $.getJSON("http://ipinfo.io", function(ipinfo){
+        console.log("Found location ["+ipinfo.loc+"] by ipinfo.io");
+        var latLong = ipinfo.loc.split(",");
+        onFirstPosition({
+            "coords" : {
+                latitude : parseFloat(latLong[0]),
+                longitude : parseFloat(latLong[1])
+            }
+        });
     }, function(err) {
         Materialize.toast('User location issue - selecting random location', 7000);
         // instead of the whole world random - (360 * Math.random() + 180).toFixed(3) * 1;
