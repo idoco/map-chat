@@ -90,7 +90,19 @@ function onPositionUpdate(position) {
 }
 
 function onPositionError(err) {
-    Materialize.toast('User location not available :(', 7000);
+    Materialize.toast('User location issue - selecting random location', 7000);
+
+    var from = -180;
+    var to = 180;
+    var lat = (Math.random() * (to - from) + from).toFixed(3) * 1;
+    var lng = (Math.random() * (to - from) + from).toFixed(3) * 1;
+    onFirstPosition({
+        "coords" : {
+            latitude : 1,
+            longitude : 2
+        }
+    });
+
     console.error('Error(' + err.code + '): ' + err.message);
 }
 
