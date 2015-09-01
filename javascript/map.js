@@ -90,21 +90,25 @@ function onPositionUpdate(position) {
 }
 
 function onPositionError(err) {
-    Materialize.toast('User location issue - selecting random location', 7000);
 
-    var from = -180;
-    var to = 180;
-    // whole world random (360 * Math.random() + 180).toFixed(3) * 1;
-    var lat = (200 * Math.random() - 100).toFixed(3) * 1;
-    var lng = (200 * Math.random() - 100).toFixed(3) * 1;
-    onFirstPosition({
-        "coords" : {
-            latitude : lat,
-            longitude : lng
-        }
+    $.getJSON("http://ipinfo.io", function(doc){
+        var latLong = doc.loc.split(",");
+        setUserLocation(parseFloat(latLong[0]), parseFloat(latLong[1]));
+        initialiseEventBus();
+        map.panTo(userLocation);
+
+    }, function(err) {
+        Materialize.toast('User location issue - selecting random location', 7000);
+        // instead of the whole world random - (360 * Math.random() + 180).toFixed(3) * 1;
+        var lat = (200 * Math.random() - 80).toFixed(3) * 1;
+        var lng = (200 * Math.random() - 80).toFixed(3) * 1;
+        onFirstPosition({
+            "coords" : {
+                latitude : lat,
+                longitude : lng
+            }
+        });
     });
-
-    console.error('Error(' + err.code + '): ' + err.message);
 }
 
 function setUserLocation(lat, lng){
