@@ -98,8 +98,8 @@ function onPositionError(err) {
     var lng = (Math.random() * (to - from) + from).toFixed(3) * 1;
     onFirstPosition({
         "coords" : {
-            latitude : 1,
-            longitude : 2
+            latitude : lat,
+            longitude : lng
         }
     });
 
