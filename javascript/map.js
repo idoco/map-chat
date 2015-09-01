@@ -94,8 +94,9 @@ function onPositionError(err) {
 
     var from = -180;
     var to = 180;
-    var lat = (Math.random() * (to - from) + from).toFixed(3) * 1;
-    var lng = (Math.random() * (to - from) + from).toFixed(3) * 1;
+    // whole world random (360 * Math.random() + 180).toFixed(3) * 1;
+    var lat = (200 * Math.random() + 100).toFixed(3) * 1;
+    var lng = (200 * Math.random() + 100).toFixed(3) * 1;
     onFirstPosition({
         "coords" : {
             latitude : lat,
