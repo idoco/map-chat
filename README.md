@@ -6,7 +6,7 @@ A super simple location based chat
 ## Features
 - Super simple location based chat.
 - No registration or message history.
-- Built-in Google Translate widgit.
+- Built-in Google Translate widget.
 - Create a private chat map by adding <i>#name</i> to the url.
 
 ## Embed MapChat in your website
