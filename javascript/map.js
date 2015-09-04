@@ -5,8 +5,8 @@ var userLocation;
 var fuzzyUserLocation;
 var markersMap = {};
 var markerImage;
-var watchPosition;
 var advanced = false;
+var infoWindowZIndex = 100;
 var shareAccurateLocation = false;
 
 var isLowResolution = window.screen.width < 768;
@@ -68,12 +68,6 @@ function initialize() {
     navigator.geolocation.getCurrentPosition(onFirstPosition, onPositionError, locationOptions);
 }
 
-function setupWatchPosition() {
-    if (!watchPosition) {
-        watchPosition = navigator.geolocation.watchPosition(onPositionUpdate, onPositionError, locationOptions);
-    }
-}
-
 function onFirstPosition(position){
     setUserLocation(position.coords.latitude, position.coords.longitude);
     initialiseEventBus();
@@ -89,8 +83,32 @@ function onPositionUpdate(position) {
 }
 
 function onPositionError(err) {
-    Materialize.toast('User location not available :(', 7000);
-    console.error('Error(' + err.code + '): ' + err.message);
+    // try fallback location provider ipinfo.io or generate random location
+    $.getJSON("http://ipinfo.io", onFallbackLocationProviderResponse, useRandomLocation);
+}
+
+function onFallbackLocationProviderResponse(ipinfo){
+    console.log("Found location ["+ipinfo.loc+"] by ipinfo.io");
+    var latLong = ipinfo.loc.split(",");
+    onFirstPosition({
+        "coords" : {
+            latitude : parseFloat(latLong[0]),
+            longitude : parseFloat(latLong[1])
+        }
+    });
+}
+
+function useRandomLocation(err) {
+    Materialize.toast('User location problem, using random location :P', 7000);
+    // These ranges cover only the center of the map
+    var lat = (90 * Math.random() - 22.5).toFixed(3);
+    var lng = (180 * Math.random() - 90).toFixed(3);
+    onFirstPosition({
+        "coords" : {
+            latitude : parseFloat(lat),
+            longitude : parseFloat(lng)
+        }
+    });
 }
 
 function setUserLocation(lat, lng){
@@ -126,6 +144,8 @@ function displayMessageOnMap(msg){
 
         existingMarker.setPosition(newPosition);
         existingInfoWindow.setContent(msg.text);
+        existingInfoWindow.setZIndex(infoWindowZIndex);
+        infoWindowZIndex++;
         if (msg.text && !markersMap[msgSessionId].disabled) {
             if (existingTimeoutId){
                 clearTimeout(existingTimeoutId);
@@ -138,8 +158,10 @@ function displayMessageOnMap(msg){
         var infoWindow = new google.maps.InfoWindow({
             content: msg.text,
             maxWidth: 400,
-            disableAutoPan: true
+            disableAutoPan: true,
+            zIndex: infoWindowZIndex
         });
+        infoWindowZIndex++;
 
         var marker = new google.maps.Marker({
             position: newPosition,
