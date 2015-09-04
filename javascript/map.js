@@ -5,7 +5,6 @@ var userLocation;
 var fuzzyUserLocation;
 var markersMap = {};
 var markerImage;
-var watchPosition;
 var advanced = false;
 var infoWindowZIndex = 100;
 var shareAccurateLocation = false;
@@ -69,12 +68,6 @@ function initialize() {
     navigator.geolocation.getCurrentPosition(onFirstPosition, onPositionError, locationOptions);
 }
 
-function setupWatchPosition() {
-    if (!watchPosition) {
-        watchPosition = navigator.geolocation.watchPosition(onPositionUpdate, onPositionError, locationOptions);
-    }
-}
-
 function onFirstPosition(position){
     setUserLocation(position.coords.latitude, position.coords.longitude);
     initialiseEventBus();
@@ -90,26 +83,31 @@ function onPositionUpdate(position) {
 }
 
 function onPositionError(err) {
-    $.getJSON("http://ipinfo.io", function(ipinfo){
-        console.log("Found location ["+ipinfo.loc+"] by ipinfo.io");
-        var latLong = ipinfo.loc.split(",");
-        onFirstPosition({
-            "coords" : {
-                latitude : parseFloat(latLong[0]),
-                longitude : parseFloat(latLong[1])
-            }
-        });
-    }, function(err) {
-        Materialize.toast('User location issue - selecting random location', 7000);
-        // instead of the whole world random - (360 * Math.random() + 180).toFixed(3) * 1;
-        var lat = (200 * Math.random() - 80).toFixed(3) * 1;
-        var lng = (200 * Math.random() - 80).toFixed(3) * 1;
-        onFirstPosition({
-            "coords" : {
-                latitude : lat,
-                longitude : lng
-            }
-        });
+    // try fallback location provider ipinfo.io or generate random location
+    $.getJSON("http://ipinfo.io", onFallbackLocationProviderResponse, useRandomLocation);
+}
+
+function onFallbackLocationProviderResponse(ipinfo){
+    console.log("Found location ["+ipinfo.loc+"] by ipinfo.io");
+    var latLong = ipinfo.loc.split(",");
+    onFirstPosition({
+        "coords" : {
+            latitude : parseFloat(latLong[0]),
+            longitude : parseFloat(latLong[1])
+        }
+    });
+}
+
+function useRandomLocation(err) {
+    Materialize.toast('User location problem, using random location :P', 7000);
+    // These ranges cover only the center of the map
+    var lat = (90 * Math.random() - 22.5).toFixed(3);
+    var lng = (180 * Math.random() - 90).toFixed(3);
+    onFirstPosition({
+        "coords" : {
+            latitude : parseFloat(lat),
+            longitude : parseFloat(lng)
+        }
     });
 }
 

@@ -44,8 +44,6 @@ function subscribe(address) {
                 retryCount = 5;
                 mySessionId = msg.newSessionId;
                 publish(topic,""); // Sending a first empty message
-                //until the location issue is fixed
-                //setupWatchPosition();
             } else {
                 displayMessageOnMap(msg);
             }
