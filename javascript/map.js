@@ -24,6 +24,8 @@ var entityMap = {
     "<": "&lt;",
     ">": "&gt;",
     '"': '&quot;',
+    "#": "&#35;",
+    "'": '&#39;',
     "/": '&#x2F;',
     "卐": 'I am a dick ',
     "卍": 'I am a dick '
@@ -130,12 +132,12 @@ function displayMessageOnMap(msg){
     // xss prevention hack
     msg.text = html_sanitize(msg.text);
 
-    msg.text = String(msg.text).replace(/[&<>"\/卐卍]/g, function (s) {
+    msg.text = String(msg.text).replace(/[&<>"#'\/卐卍]/g, function (s) {
         return entityMap[s];
     });
 
 //    msg.text = msg.text ? embedTweet(msg.text) : "";
-    msg.text = msg.text.replace(/#(\S*)/g,'<a href="http://idoco.github.io/map-chat/#$1" target="_blank">$1</a>');
+    msg.text = msg.text.replace(/&#35;(\S*)/g,'<a href="http://idoco.github.io/map-chat/#$1" target="_blank">$1</a>');
 
     if(markersMap[msgSessionId]){ // update existing marker
         var existingMarker = markersMap[msgSessionId].marker;
