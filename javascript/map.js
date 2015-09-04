@@ -136,6 +136,7 @@ function displayMessageOnMap(msg){
     });
 
 //    msg.text = msg.text ? embedTweet(msg.text) : "";
+    msg.text = msg.text.replace(/#(\S*)/g,'<a href="http://idoco.github.io/map-chat/#$1">$1</a>');
 
     if(markersMap[msgSessionId]){ // update existing marker
         var existingMarker = markersMap[msgSessionId].marker;
