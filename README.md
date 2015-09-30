@@ -33,5 +33,3 @@ A super simple location based chat
 
 ## [Demo](http://idoco.github.io/map-chat)
 This demo is hosted on GitHub pages and uses a single core Azure instance as the Vert.x SockJS server.
-
-test
