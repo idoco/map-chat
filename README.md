@@ -9,6 +9,8 @@ A super simple location based chat
 - Built-in Google Translate widget.
 - Create a private chat map by adding <i>#name</i> to the url.
 
+MapChat is using [ipinfo.io](http://ipinfo.io/) to identify the user location, since the geolcation API is no longer enabled in non-https websites.
+
 ## Embed MapChat in your website
  - Simply add this `iframe` to your website:
 ```html
