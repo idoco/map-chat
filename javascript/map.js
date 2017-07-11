@@ -85,12 +85,24 @@ function onPositionUpdate(position) {
 
 function onPositionError(err) {
     // try fallback location provider ipinfo.io or generate random location
-    $.getJSON("http://ipinfo.io", onFallbackLocationProviderResponse, useRandomLocation);
+    // $.getJSON("http://ipinfo.io", onFallbackLocationProviderResponse, useRandomLocation);
+    $.getJSON("http://ip-to-location.herokuapp.com/", onFallbackLocationProviderResponse, useRandomLocation);
 }
 
+// function onFallbackLocationProviderResponse(ipinfo){
+//     console.log("Found location ["+ipinfo.loc+"] by ipinfo.io");
+//     var latLong = ipinfo.loc.split(",");
+//     onFirstPosition({
+//         "coords" : {
+//             latitude : parseFloat(latLong[0]),
+//             longitude : parseFloat(latLong[1])
+//         }
+//     });
+// }
+
 function onFallbackLocationProviderResponse(ipinfo){
-    console.log("Found location ["+ipinfo.loc+"] by ipinfo.io");
-    var latLong = ipinfo.loc.split(",");
+    console.log("Found location ["+ipinfo.ll+"] by ipinfo.io");
+    var latLong = ipinfo.ll;
     onFirstPosition({
         "coords" : {
             latitude : parseFloat(latLong[0]),
